@@ -1,17 +1,18 @@
 object Form1: TForm1
-  Left = 1279
-  Height = 433
-  Top = 176
-  Width = 401
+  Left = 1216
+  Height = 497
+  Top = 10
+  Width = 433
   Caption = 'Form1'
-  ClientHeight = 433
-  ClientWidth = 401
+  ClientHeight = 477
+  ClientWidth = 433
+  Menu = MainMenu1
   OnCreate = FormCreate
   LCLVersion = '1.4.0.4'
   object Memo1: TMemo
-    Left = 5
+    Left = 8
     Height = 352
-    Top = 6
+    Top = 72
     Width = 151
     Lines.Strings = (
       'Memo1'
@@ -19,85 +20,115 @@ object Form1: TForm1
     TabOrder = 0
   end
   object Edit1: TEdit
-    Left = 192
+    Left = 195
     Height = 23
-    Top = 32
+    Top = 98
     Width = 80
     TabOrder = 1
     Text = 'Edit1'
   end
   object Label1: TLabel
-    Left = 168
+    Left = 171
     Height = 15
-    Top = 6
+    Top = 72
     Width = 124
     Caption = 'Zadajte nazov zoznamu'
     ParentColor = False
   end
   object Edit2: TEdit
-    Left = 192
+    Left = 196
     Height = 23
-    Top = 104
+    Top = 226
     Width = 80
     TabOrder = 2
     Text = 'Edit2'
   end
   object Label2: TLabel
-    Left = 175
+    Left = 179
     Height = 15
-    Top = 80
+    Top = 202
     Width = 117
     Caption = 'Zmena nakupnej ceny'
     ParentColor = False
   end
   object Button1: TButton
-    Left = 168
+    Left = 171
     Height = 25
-    Top = 376
+    Top = 442
     Width = 75
     Caption = 'Nacitaj'
     OnClick = Button1Click
     TabOrder = 3
   end
   object Button2: TButton
-    Left = 320
+    Left = 323
     Height = 25
-    Top = 376
+    Top = 442
     Width = 75
     Caption = 'Zapis'
     OnClick = Button2Click
     TabOrder = 4
   end
   object Edit3: TEdit
-    Left = 192
+    Left = 196
     Height = 23
-    Top = 176
+    Top = 298
     Width = 80
     TabOrder = 5
     Text = 'Edit3'
   end
   object Label3: TLabel
-    Left = 175
+    Left = 179
     Height = 15
-    Top = 152
+    Top = 274
     Width = 117
     Caption = 'Zmena predajnej ceny'
     ParentColor = False
   end
   object Edit4: TEdit
-    Left = 312
+    Left = 323
     Height = 23
-    Top = 56
+    Top = 146
     Width = 80
     TabOrder = 6
     Text = 'Edit4'
   end
   object Label4: TLabel
-    Left = 328
+    Left = 355
     Height = 15
-    Top = 40
+    Top = 122
     Width = 21
     Caption = 'Kod'
     ParentColor = False
+  end
+  object ComboBox1: TComboBox
+    Left = 171
+    Height = 23
+    Top = 130
+    Width = 128
+    ItemHeight = 15
+    TabOrder = 7
+    Text = 'ComboBox1'
+  end
+  object Button3: TButton
+    Left = 208
+    Height = 28
+    Top = 360
+    Width = 120
+    Caption = 'Print pole'
+    OnClick = Button3Click
+    TabOrder = 8
+  end
+  object MainMenu1: TMainMenu
+    left = 16
+    object MenuItem1: TMenuItem
+      Caption = 'Som prve menu'
+      object MenuItem2: TMenuItem
+        Caption = 'Fungujem ako button'
+      end
+      object MenuItem3: TMenuItem
+        Caption = 'Aj ja!'
+      end
+    end
   end
 end
