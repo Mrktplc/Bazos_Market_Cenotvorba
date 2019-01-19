@@ -74,19 +74,18 @@ begin
  for i:=1 to  pocet_riad do
   begin
   readln(subor,pom_s);
-  pom:=Pos(pom_s,'_');
-  pom_pom_pom:=Copy(pom_s,1,pom);
-  pole[i].kod:=Strtoint(pom_pom_pom); //nacitanie kod do pola
+  pom:=Pos(';',pom_s);    // AK SA TOTO OPRAVI TAK POTOM TO POJDE
+  pole[i].kod:=Strtoint(Copy(pom_s,1,pom-1)); //nacitanie kod do pola
 
-  Delete(pom_s,1,pom+1); //odreze kod zo nacitaneho riadku
+  Delete(pom_s,1,pom); //odreze kod zo nacitaneho riadku
 
-  pom:=Pos(pom_s,';');
-  pole[i].ncena:=Strtoint(Copy(pom_s,1,pom)); //naciatnie nakupnej ceny
+  pom:=Pos(';',pom_s);
+  pole[i].ncena:=Strtoint(Copy(pom_s,1,pom-1)); //naciatnie nakupnej ceny
 
-  Delete(pom_s,1,pom+1); //odreze nakupna cena zo nacitaneho riadku
+  Delete(pom_s,1,pom); //odreze nakupna cena zo nacitaneho riadku
 
-  pom:=Pos(pom_s,';');
-  pole[i].pcena:=Strtoint(Copy(pom_s,1,pom));
+  pom:=Length(pom_s);
+  pole[i].pcena:=Strtoint(Copy(pom_s,1,pom-1));
 
   end;
  CloseFile(subor); //END of naćitanie
@@ -105,6 +104,7 @@ end;
 procedure TForm1.Button3Click(Sender: TObject);
 var i:integer;
 begin
+  memo1.append('Kod___Nakupna cena___Predajna cena');
   for i:=1 to pocet_riad do
    begin
    memo1.append(InttoStr(pole[i].kod)+'____'+InttoStr(pole[i].ncena)+'____'+InttoStr(pole[i].pcena));
