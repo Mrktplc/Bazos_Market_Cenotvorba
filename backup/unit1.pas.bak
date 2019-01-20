@@ -53,7 +53,7 @@ var
   nc:integer; //nakupnacena
   pc:integer; //predajnacena
   nazov:string;  //berie sa nazov zoznamu z edit.1
-
+  i:integer;
   Form1: TForm1;
 
 implementation
@@ -64,17 +64,17 @@ implementation
 
 procedure TForm1.Button1Click(Sender: TObject);
 Var
-pom,i,j:integer;
+pom,j:integer;
 pom_s,pom_pom_pom:string;
 begin
- AssignFile(subor,'cennik.txt');
+ AssignFile(subor,'cennik.txt');       //moze sa zmenit na nazov+
  Reset(subor);
  Readln(subor,pom_s);
  pocet_riad:=strtoint(pom_s);
  for i:=1 to  pocet_riad do
   begin
   readln(subor,pom_s);
-  pom:=Pos(';',pom_s);    // AK SA TOTO OPRAVI TAK POTOM TO POJDE
+  pom:=Pos(';',pom_s);    //Opravene. malo to byť naopak ^^
   pole[i].kod:=Strtoint(Copy(pom_s,1,pom-1)); //nacitanie kod do pola
 
   Delete(pom_s,1,pom); //odreze kod zo nacitaneho riadku
@@ -85,20 +85,33 @@ begin
   Delete(pom_s,1,pom); //odreze nakupna cena zo nacitaneho riadku
 
   pom:=Length(pom_s);
-  pole[i].pcena:=Strtoint(Copy(pom_s,1,pom-1));
+  pole[i].pcena:=Strtoint(Copy(pom_s,1,pom));
 
   end;
  CloseFile(subor); //END of naćitanie
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
-begin    {
-  pole[nc].ncena:=inttostr(edit2.text); //nakupna cena
-  pole[pc].pcena:=inttostr(edit3.text); //predajna cena
-  pom:=inttostr(edit4.text);       //pomocna pri vyhladavani ci sa tam taky kod vobec nachadza
-  AssignFile(subor,nazov+'.txt');
-  Append(subor); }
+var
+pom1:integer;
+pom2:integer;
+pom3:integer;
+begin
+ Memo1.Clear;
+  pom1:=strtoint(edit2.text);
+  pom2:=strtoint(edit3.text);
+  pom3:=strtoint(edit4.text);
+  pole[i].ncena:=pom1;
+  pole[i].pcena:=pom2;
+    AssignFile(subor,'cennik.txt');
+    Append(subor);
 
+
+
+
+ //Memo1.Append(inttostr(pom1));
+ //Memo1.Append(inttostr(pom2));
+ //Memo1.Append(inttostr(pole[i].ncena));
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
@@ -108,6 +121,11 @@ begin
   for i:=1 to pocet_riad do
    begin
    memo1.append(InttoStr(pole[i].kod)+'____'+InttoStr(pole[i].ncena)+'____'+InttoStr(pole[i].pcena));
+   end;
+  For i:=1 to pocet_riad do
+   begin
+   memo1.append(inttostr(pole[i].ncena));
+   //memo1.Append(inttostr(pole[i].pcena));
    end;
 end;
 
