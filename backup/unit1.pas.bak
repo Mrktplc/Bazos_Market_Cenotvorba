@@ -23,14 +23,7 @@ type
     Button3: TButton;
     zmenaNceny: TButton;
     zmenaPCeny: TButton;
-    ComboBox1: TComboBox;
-    Edit1: TEdit;
-    Edit2: TEdit;
-    Edit3: TEdit;
     Edit4: TEdit;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
     Label4: TLabel;
     MainMenu1: TMainMenu;
     Memo1: TMemo;
@@ -103,17 +96,12 @@ pom3:integer;
 iTovaru: integer;
 begin
  {Memo1.Clear;
-  pom1:=strtoint(edit2.text);          //zmena nakupnej ceny
-  pom2:=strtoint(edit3.text);          //zmena predajnej ceny
-  pom3:=strtoint(edit4.text);          //kod na pororvnanie
-  tovary[i].ncena:=pom1;
-  tovary[i].pcena:=pom2;
     AssignFile(subor,'cennik.txt');
-    Append(subor);
+    Append(subor);}
+
+    //22.01.2019 dokoncit zapis a pohrat sa s editom cien
 
 
-    iTovaru:= 1;
-    while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru); }
 
 
 
@@ -122,10 +110,10 @@ end;
 procedure TForm1.Button3Click(Sender: TObject);
 var i:integer;
 begin
-  memo1.append('Kod___Nakupna cena___Predajna cena');
+  memo1.append('Kod__Nakupna cena__Predajna cena');
   for i:=1 to pocet_riad do
    begin
-   memo1.append(InttoStr(tovary[i].kod)+'____'+InttoStr(tovary[i].ncena)+'____'+InttoStr(tovary[i].pcena));
+   memo1.append(InttoStr(tovary[i].kod)+'__'+InttoStr(tovary[i].ncena)+'__'+InttoStr(tovary[i].pcena));
    end;
 
 end;
@@ -140,12 +128,22 @@ var
    chcemInteger:integer;
    pom3,hlKod,iTovaru:integer;
 begin
-  //pom3:=strtoint(edit4.text);
-  //chcemString:=inputbox('Zmena Predajnej Ceny','Zadaj novu cenu', inputRiadok);
-  chcemInteger:=strtoint(inputbox('Zmena Predajnej ceny','Zadaj novu cenu',inputRiadok));
+  pom3:=strtoint(edit4.text);
+  //chcemString:=inputbox('Zmena Nakupnej Ceny','Zadaj novu cenu', inputRiadok);
+  chcemInteger:=strtoint(inputbox('Zmena Nakupnej ceny','Zadaj novu cenu',inputRiadok));
 
-  iTovaru:= 1;
-   // while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
+  hlKod:= 1;
+   while(pom3 <> tovary[hlKod].kod) do inc(hlKod);
+   Memo1.Append(inttostr(hlKod));
+
+
+
+   tovary[i].ncena:=chcemInteger;
+   Memo1.Append(inttostr(tovary[i].ncena));
+
+
+
+
 end;
 
 procedure TForm1.zmenaPCenyClick(Sender: TObject);
@@ -156,7 +154,7 @@ var
 begin
   //pom3:=strtoint(edit4.text);
      //chcemString:= inputbox('Zadaj novu cenu','toto mi daj', inputRiadok);
-     chcemInteger:= strToInt(inputbox('toto je okno', 'toto mi daj', inputRiadok));
+     chcemInteger:= strToInt(inputbox('Predajna cena', 'Zadaj novu predajnu cenu', inputRiadok));
      Memo1.Append(chcemString +' '+ intToStr(chcemInteger));
 
      iTovaru:= 1;
