@@ -9,9 +9,9 @@ uses
   ExtCtrls, Menus;
 
 type
-  cena=record
-    ncena:integer; //nakupna cena
-    pcena:integer; //predajna cena
+  tovar=record
+    ncena:integer; //nakupna tovar
+    pcena:integer; //predajna tovar
     kod:integer; //kod tovaru
   end;
 
@@ -21,6 +21,8 @@ type
     Button1: TButton;
     Button2: TButton;
     Button3: TButton;
+    zmenaNceny: TButton;
+    zmenaPCeny: TButton;
     ComboBox1: TComboBox;
     Edit1: TEdit;
     Edit2: TEdit;
@@ -39,6 +41,8 @@ type
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure zmenaNcenyClick(Sender: TObject);
+    procedure zmenaPCenyClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -47,12 +51,12 @@ type
  Const N=100;
 
 var
-  pole:array[1..N]of cena;
+  tovary:array[1..N]of tovar;
   subor:textfile;
   pocet_riad:integer;
   nc:integer; //nakupnacena
   pc:integer; //predajnacena
-  nazov:string;  //berie sa nazov zoznamu z edit.1
+  nazov:string;  //berie sa nazov zoznamu z edit.1, neskor zmenim na Radiobutton alebo checkbox
   i:integer;
   Form1: TForm1;
 
@@ -65,7 +69,7 @@ implementation
 procedure TForm1.Button1Click(Sender: TObject);
 Var
 pom,j:integer;
-pom_s,pom_pom_pom:string;
+pom_s:string;
 begin
  AssignFile(subor,'cennik.txt');       //moze sa zmenit na nazov+
  Reset(subor);
@@ -75,17 +79,17 @@ begin
   begin
   readln(subor,pom_s);
   pom:=Pos(';',pom_s);    //Opravene. malo to byť naopak ^^
-  pole[i].kod:=Strtoint(Copy(pom_s,1,pom-1)); //nacitanie kod do pola
+  tovary[i].kod:=Strtoint(Copy(pom_s,1,pom-1)); //nacitanie kod do pola
 
   Delete(pom_s,1,pom); //odreze kod zo nacitaneho riadku
 
   pom:=Pos(';',pom_s);
-  pole[i].ncena:=Strtoint(Copy(pom_s,1,pom-1)); //naciatnie nakupnej ceny
+  tovary[i].ncena:=Strtoint(Copy(pom_s,1,pom-1)); //naciatnie nakupnej ceny
 
-  Delete(pom_s,1,pom); //odreze nakupna cena zo nacitaneho riadku
+  Delete(pom_s,1,pom); //odreze nakupna tovar zo nacitaneho riadku
 
   pom:=Length(pom_s);
-  pole[i].pcena:=Strtoint(Copy(pom_s,1,pom));
+  tovary[i].pcena:=Strtoint(Copy(pom_s,1,pom));
 
   end;
  CloseFile(subor); //END of naćitanie
@@ -96,22 +100,23 @@ var
 pom1:integer;
 pom2:integer;
 pom3:integer;
+iTovaru: integer;
 begin
- Memo1.Clear;
-  pom1:=strtoint(edit2.text);
-  pom2:=strtoint(edit3.text);
-  pom3:=strtoint(edit4.text);
-  pole[i].ncena:=pom1;
-  pole[i].pcena:=pom2;
+ {Memo1.Clear;
+  pom1:=strtoint(edit2.text);          //zmena nakupnej ceny
+  pom2:=strtoint(edit3.text);          //zmena predajnej ceny
+  pom3:=strtoint(edit4.text);          //kod na pororvnanie
+  tovary[i].ncena:=pom1;
+  tovary[i].pcena:=pom2;
     AssignFile(subor,'cennik.txt');
     Append(subor);
 
 
+    iTovaru:= 1;
+    while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru); }
 
 
- //Memo1.Append(inttostr(pom1));
- //Memo1.Append(inttostr(pom2));
- //Memo1.Append(inttostr(pole[i].ncena));
+
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
@@ -120,17 +125,43 @@ begin
   memo1.append('Kod___Nakupna cena___Predajna cena');
   for i:=1 to pocet_riad do
    begin
-   memo1.append(InttoStr(pole[i].kod)+'____'+InttoStr(pole[i].ncena)+'____'+InttoStr(pole[i].pcena));
+   memo1.append(InttoStr(tovary[i].kod)+'____'+InttoStr(tovary[i].ncena)+'____'+InttoStr(tovary[i].pcena));
    end;
-  For i:=1 to pocet_riad do
-   begin
-   memo1.append(inttostr(pole[i].ncena));
-   //memo1.Append(inttostr(pole[i].pcena));
-   end;
+
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+end;
+
+procedure TForm1.zmenaNcenyClick(Sender: TObject);
+var
+   chcemString, inputRiadok: string;
+   chcemInteger:integer;
+   pom3,hlKod,iTovaru:integer;
+begin
+  //pom3:=strtoint(edit4.text);
+  //chcemString:=inputbox('Zmena Predajnej Ceny','Zadaj novu cenu', inputRiadok);
+  chcemInteger:=strtoint(inputbox('Zmena Predajnej ceny','Zadaj novu cenu',inputRiadok));
+
+  iTovaru:= 1;
+   // while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
+end;
+
+procedure TForm1.zmenaPCenyClick(Sender: TObject);
+var
+   chcemString, inputRiadok: string;
+   chcemInteger: integer;
+   pom3,hlKod,iTovaru:integer;
+begin
+  //pom3:=strtoint(edit4.text);
+     //chcemString:= inputbox('Zadaj novu cenu','toto mi daj', inputRiadok);
+     chcemInteger:= strToInt(inputbox('toto je okno', 'toto mi daj', inputRiadok));
+     Memo1.Append(chcemString +' '+ intToStr(chcemInteger));
+
+     iTovaru:= 1;
+    //while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
+
 end;
 
 end.

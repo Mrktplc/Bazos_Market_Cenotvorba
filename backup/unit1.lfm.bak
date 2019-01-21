@@ -1,14 +1,14 @@
 object Form1: TForm1
-  Left = 1204
+  Left = 754
   Height = 497
-  Top = 0
-  Width = 584
+  Top = 91
+  Width = 452
   Caption = 'Form1'
   ClientHeight = 477
-  ClientWidth = 584
+  ClientWidth = 452
   Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '1.4.0.4'
+  LCLVersion = '1.6.4.0'
   object Memo1: TMemo
     Left = 8
     Height = 352
@@ -52,9 +52,9 @@ object Form1: TForm1
     ParentColor = False
   end
   object Button1: TButton
-    Left = 320
+    Left = 352
     Height = 25
-    Top = 434
+    Top = 408
     Width = 75
     Caption = 'Nacitaj'
     OnClick = Button1Click
@@ -118,6 +118,24 @@ object Form1: TForm1
     Caption = 'Print pole'
     OnClick = Button3Click
     TabOrder = 8
+  end
+  object zmenaPCeny: TButton
+    Left = 16
+    Height = 25
+    Top = 440
+    Width = 128
+    Caption = 'zmena predajnej ceny'
+    OnClick = zmenaPCenyClick
+    TabOrder = 9
+  end
+  object zmenaNceny: TButton
+    Left = 160
+    Height = 25
+    Top = 440
+    Width = 136
+    Caption = 'zmena Nakupnej ceny'
+    OnClick = zmenaNcenyClick
+    TabOrder = 10
   end
   object MainMenu1: TMainMenu
     left = 16
