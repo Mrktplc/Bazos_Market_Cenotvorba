@@ -4,8 +4,8 @@ object Form1: TForm1
   Top = 142
   Width = 581
   Caption = 'Form1'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 477
+  ClientWidth = 581
   Menu = MainMenu1
   OnCreate = FormCreate
   LCLVersion = '1.6.4.0'

@@ -131,15 +131,18 @@ begin
   pom3:=strtoint(edit4.text);
   //chcemString:=inputbox('Zmena Nakupnej Ceny','Zadaj novu cenu', inputRiadok);
   chcemInteger:=strtoint(inputbox('Zmena Nakupnej ceny','Zadaj novu cenu',inputRiadok));
+  Memo1.Append(chcemString +' '+ intToStr(chcemInteger));
 
-  hlKod:= 1;
-   while(pom3 <> tovary[hlKod].kod) do inc(hlKod);
-   Memo1.Append(inttostr(hlKod));
+  iTovaru:= 1;
+   while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
+   Memo1.Append(inttostr(iTovaru));
+
+    hlKod:=iTovaru;
+    tovary[hlKod].ncena:=chcemInteger;
+    Memo1.Append(inttostr(tovary[hlKod].ncena));
 
 
 
-   tovary[i].ncena:=chcemInteger;
-   Memo1.Append(inttostr(tovary[i].ncena));
 
 
 
@@ -157,11 +160,13 @@ begin
      chcemInteger:= strToInt(inputbox('Predajna cena', 'Zadaj novu predajnu cenu', inputRiadok));
      Memo1.Append(chcemString +' '+ intToStr(chcemInteger));
 
-     hlKod:= 1;
-    while(pom3 <> tovary[hlKod].kod) do inc(hlKod);
+     iTovaru:= 1;
+    while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
+    Memo1.Append(inttostr(tovary[iTovaru].kod));
 
-    tovary[i].pcena:=chcemInteger;
-    Memo1.Append(inttostr(tovary[i].pcena));
+    hlKod:=iTovaru;
+    tovary[hlKod].pcena:=chcemInteger;
+    Memo1.Append(inttostr(tovary[hlKod].pcena));
 
 end;
 
