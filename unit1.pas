@@ -137,9 +137,9 @@ begin
    while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
    Memo1.Append(inttostr(iTovaru));
 
-    hlKod:=iTovaru;
-    tovary[hlKod].ncena:=chcemInteger;
-    Memo1.Append(inttostr(tovary[hlKod].ncena));
+    i:=iTovaru;
+    tovary[i].ncena:=chcemInteger;
+    Memo1.Append(inttostr(tovary[i].ncena));
 
 
 
@@ -164,9 +164,9 @@ begin
     while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
     Memo1.Append(inttostr(tovary[iTovaru].kod));
 
-    hlKod:=iTovaru;
-    tovary[hlKod].pcena:=chcemInteger;
-    Memo1.Append(inttostr(tovary[hlKod].pcena));
+   i:=iTovaru;
+    tovary[i].pcena:=chcemInteger;
+    Memo1.Append(inttostr(tovary[i].pcena));
 
 end;
 
