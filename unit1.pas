@@ -97,12 +97,13 @@ begin
     AssignFile(subor,'cennik2.txt');
     Append(subor);
 
-   { While not eof(subor) do
+       For i:=1 to 3 do
         begin
-        write(subor,tovary[i].kod);
-        end; }
+        writeln(subor,tovary[i].ncena);
+        writeln(subor,tovary[i].pcena);
+        end;
 
-
+   CloseFile(subor);
 
 
 

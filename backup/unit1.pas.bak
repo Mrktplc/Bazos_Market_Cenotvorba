@@ -94,15 +94,16 @@ iTovaru,j: integer;
 
 begin
  Memo1.Clear;
-    AssignFile(subor,'cennik2.txt');
+    AssignFile(subor,'cennik.txt');
     Append(subor);
 
-    While not eof(subor) do
+       For i:=1 to 3 do
         begin
-        write(subor,tovary[i].kod);
+        writeln(subor,tovary[i].ncena);
+        writeln(subor,tovary[i].pcena);
         end;
 
-
+   CloseFile(subor);
 
 
 
