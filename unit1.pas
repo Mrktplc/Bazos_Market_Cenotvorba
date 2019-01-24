@@ -90,20 +90,25 @@ end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-pom1:integer;
-pom2:integer;
-pom3:integer;
-iTovaru: integer;
+iTovaru,j: integer;
+
 begin
- {Memo1.Clear;
-    AssignFile(subor,'cennik.txt');
-    Append(subor);}
+ Memo1.Clear;
+    AssignFile(subor,'cennik2.txt');
+    Append(subor);
 
-    //22.01.2019 dokoncit zapis a pohrat sa s editom cien
+   { While not eof(subor) do
+        begin
+        write(subor,tovary[i].kod);
+        end; }
 
 
 
 
+
+
+
+  //24.01.2019 dokoncit zapis!!!!!
 
 end;
 
