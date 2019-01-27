@@ -1,41 +1,35 @@
-unit Unit1;
+unit Unit1;                                     //Nova Aplikacia cenotvorba
 
 {$mode objfpc}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Menus;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls, LCLType;
 
 type
   tovar=record
-    ncena:integer; //nakupna tovar
-    pcena:integer; //predajna tovar
+    ncena:integer; //nakupna cena
+    pcena:integer; //predajna cena
     kod:integer; //kod tovaru
   end;
 
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    zmenaNceny: TButton;
-    zmenaPCeny: TButton;
-    Edit4: TEdit;
-    Label4: TLabel;
-    MainMenu1: TMainMenu;
-    Memo1: TMemo;
-    MenuItem1: TMenuItem;
-    MenuItem2: TMenuItem;
-    MenuItem3: TMenuItem;
-    procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure zmenaNcenyClick(Sender: TObject);
-    procedure zmenaPCenyClick(Sender: TObject);
+    Relod: TButton;
+    Label2: TLabel;
+    Label3: TLabel;
+    ListBox2: TListBox;
+    ListBox3: TListBox;
+    Nacitaj: TButton;
+    Label1: TLabel;
+    ListBox1: TListBox;
+    procedure ListBox1Click(Sender: TObject);
+    procedure ListBox2Click(Sender: TObject);
+    procedure ListBox3Click(Sender: TObject);
+    procedure NacitajClick(Sender: TObject);
+    procedure RelodClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -47,10 +41,8 @@ var
   tovary:array[1..N]of tovar;
   subor:textfile;
   pocet_riad:integer;
-  nc:integer; //nakupnacena
-  pc:integer; //predajnacena
-  nazov:string;  //berie sa nazov zoznamu z edit.1, neskor zmenim na Radiobutton alebo checkbox
-  i:integer;
+  nacena:integer;   //len na ukazku, neskor sa bude prerabat
+  prcenai:integer;   //globalna ktora sluzi len na demonstraciu
   Form1: TForm1;
 
 implementation
@@ -59,122 +51,84 @@ implementation
 
 { TForm1 }
 
-procedure TForm1.Button1Click(Sender: TObject);
-Var
-pom,j:integer;
-pom_s:string;
+procedure TForm1.NacitajClick(Sender: TObject);
+var
+  i,pom:integer;     //i=uroven zapisania, pom= nahravanie udajov, pom_s=string sa nahrava
+  pom_s:string;
 begin
- AssignFile(subor,'cennik.txt');       //moze sa zmenit na nazov+
+AssignFile(subor,'tovar.txt');
  Reset(subor);
  Readln(subor,pom_s);
- pocet_riad:=strtoint(pom_s);
- for i:=1 to  pocet_riad do
-  begin
-  readln(subor,pom_s);
-  pom:=Pos(';',pom_s);    //Opravene. malo to byť naopak ^^
-  tovary[i].kod:=Strtoint(Copy(pom_s,1,pom-1)); //nacitanie kod do pola
+////////////////////
+//Nacitanie
+pocet_riad:=strtoint(pom_s);
+ For i:=1 to pocet_riad do
+     begin
+       readln(subor,pom_s);
+       pom:=Pos(';',pom_s);
+       tovary[i].kod:=Strtoint(Copy(pom_s,1,pom-1));    //nacitanie kodu do pola
+       Delete(pom_s,1,pom); //odreze kod z nacitaneho riadku
 
-  Delete(pom_s,1,pom); //odreze kod zo nacitaneho riadku
+        pom:=Pos(';',pom_s);
+        tovary[i].ncena:=strtoint(copy(pom_s,1,pom-1));
+        Delete(pom_s,1,pom); //odreze nakupnu cena z nacitaneho riadku
 
-  pom:=Pos(';',pom_s);
-  tovary[i].ncena:=Strtoint(Copy(pom_s,1,pom-1)); //naciatnie nakupnej ceny
+         pom:=Length(pom_s);
+         tovary[i].pcena:=Strtoint(Copy(pom_s,1,pom));
+     end;
+ CloseFile(subor);
+ /////////////////////////
+ //Vsuvka do Listbox
+ For i:=1 to pocet_riad do
+     begin
+     ListBox1.Items.Add(inttostr(tovary[i].kod));
+     Listbox2.Items.Add(inttostr(tovary[i].ncena));
+     Listbox3.Items.Add(inttostr(tovary[i].pcena));
+     end;
+end;
 
-  Delete(pom_s,1,pom); //odreze nakupna tovar zo nacitaneho riadku
-
-  pom:=Length(pom_s);
-  tovary[i].pcena:=Strtoint(Copy(pom_s,1,pom));
-
+procedure TForm1.ListBox1Click(Sender: TObject);          //na dvojklik mi vyskoci okienko, kde mozem zadavat novu cenu
+var
+  QueryResult: Boolean;
+  UserString: string;
+begin
+ begin
+  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString)
+  then ShowMessage(UserString)
+ // else
+  //begin
+    //InputQuery('Bleh', 'Snaz sa', UserString);
+    //ShowMessage(UserString);
   end;
- CloseFile(subor); //END of naćitanie
-end;
+ end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TForm1.ListBox2Click(Sender: TObject);  //ncena
 var
-iTovaru,j: integer;
-
+  QueryResult: Boolean;
+  UserString: string;
 begin
- Memo1.Clear;
-    AssignFile(subor,'cennik.txt');
-    Append(subor);
+ InputQuery('Nova cena', 'Zadaj novu cenu', UserString);
 
-       For i:=1 to 3 do
-        begin
-        writeln(subor,tovary[i].ncena);
-        writeln(subor,tovary[i].pcena);
-        end;
+  //nacena:=(InputQuery);
+  end;
 
-   CloseFile(subor);
-
-
-
-
-
-  //24.01.2019 dokoncit zapis!!!!!
-
-end;
-
-procedure TForm1.Button3Click(Sender: TObject);
-var i:integer;
+procedure TForm1.ListBox3Click(Sender: TObject);     //pcena
+var
+  QueryResult: Boolean;
+  UserString: string;
 begin
-  memo1.append('Kod__Nakupna cena__Predajna cena');
-  for i:=1 to pocet_riad do
-   begin
-   memo1.append(InttoStr(tovary[i].kod)+'__'+InttoStr(tovary[i].ncena)+'__'+InttoStr(tovary[i].pcena));
+ if InputQuery('Nova cena', 'Zadaj novu cenu', UserString)
+  then ShowMessage(UserString);
+   //prcena:=InputQuery;
    end;
-
-end;
-
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TForm1.RelodClick(Sender: TObject);
 begin
+  ListBox1.Items.Clear;
+  Listbox2.Items.Clear;
+  Listbox3.Items.Clear;
+  //Listbox1.Items.Add:=(inttostr(tovary[i].kod));
+  //Listbox2.Items.Add:=(inttostr(tovary[nacena].ncena));
+  //Listbox3.Items.Add:=(inttostr(tovary[prcena].pcena));
 end;
-
-procedure TForm1.zmenaNcenyClick(Sender: TObject);
-var
-   chcemString, inputRiadok: string;
-   chcemInteger:integer;
-   pom3,hlKod,iTovaru:integer;
-begin
-  pom3:=strtoint(edit4.text);
-  //chcemString:=inputbox('Zmena Nakupnej Ceny','Zadaj novu cenu', inputRiadok);
-  chcemInteger:=strtoint(inputbox('Zmena Nakupnej ceny','Zadaj novu cenu',inputRiadok));
-  Memo1.Append(chcemString +' '+ intToStr(chcemInteger));
-
-  iTovaru:= 1;
-   while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
-   Memo1.Append(inttostr(iTovaru));
-
-    i:=iTovaru;
-    tovary[i].ncena:=chcemInteger;
-    Memo1.Append(inttostr(tovary[i].ncena));
-
-
-
-
-
-
-
-end;
-
-procedure TForm1.zmenaPCenyClick(Sender: TObject);
-var
-   chcemString, inputRiadok: string;
-   chcemInteger: integer;
-   pom3,hlKod,iTovaru:integer;
-begin
-  //pom3:=strtoint(edit4.text);
-     //chcemString:= inputbox('Zadaj novu cenu','toto mi daj', inputRiadok);
-     chcemInteger:= strToInt(inputbox('Predajna cena', 'Zadaj novu predajnu cenu', inputRiadok));
-     Memo1.Append(chcemString +' '+ intToStr(chcemInteger));
-
-     iTovaru:= 1;
-    while(pom3 <> tovary[iTovaru].kod) do inc(iTovaru);
-    Memo1.Append(inttostr(tovary[iTovaru].kod));
-
-   i:=iTovaru;
-    tovary[i].pcena:=chcemInteger;
-    Memo1.Append(inttostr(tovary[i].pcena));
-
-end;
-
 end.
 
