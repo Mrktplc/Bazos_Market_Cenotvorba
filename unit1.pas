@@ -25,11 +25,10 @@ type
     Nacitaj: TButton;
     Label1: TLabel;
     ListBox1: TListBox;
-    procedure ListBox1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure ListBox2Click(Sender: TObject);
     procedure ListBox3Click(Sender: TObject);
-    procedure NacitajClick(Sender: TObject);
-    procedure RelodClick(Sender: TObject);
+
   private
     { private declarations }
   public
@@ -52,12 +51,11 @@ implementation
 
 { TForm1 }
 
-procedure TForm1.NacitajClick(Sender: TObject);
-var
-  i,pom:integer;     //i=uroven zapisania, pom= nahravanie udajov, pom_s=string sa nahrava
+procedure TForm1.FormCreate(Sender: TObject);
+var i, pom:integer;
   pom_s:string;
 begin
-AssignFile(subor,'tovar.txt');
+ AssignFile(subor,'tovar.txt');
  Reset(subor);
  Readln(subor,pom_s);
 ////////////////////
@@ -87,6 +85,7 @@ pocet_riad:=strtoint(pom_s);
      Listbox3.Items.Add(inttostr(tovary[i].pcena));
      end;
 end;
+
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2
 procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena
@@ -101,6 +100,7 @@ begin
  Listbox2.Clear;
  Listbox2.Items.Add(inttostr(tovary[i].ncena));
   end;
+
 //Listbox 3
 procedure TForm1.ListBox3Click(Sender: TObject);     //na klik mi vyskoci okienko,kde zadavam novu pcena
 var

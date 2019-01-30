@@ -1,11 +1,12 @@
 object Form1: TForm1
-  Left = 980
+  Left = 1211
   Height = 488
-  Top = 158
+  Top = 140
   Width = 438
   Caption = 'Form1'
   ClientHeight = 488
   ClientWidth = 438
+  OnCreate = FormCreate
   LCLVersion = '1.4.0.4'
   object ListBox1: TListBox
     Left = 16
@@ -13,7 +14,6 @@ object Form1: TForm1
     Top = 40
     Width = 80
     ItemHeight = 0
-    OnClick = ListBox1Click
     TabOrder = 0
   end
   object Label1: TLabel
@@ -73,7 +73,6 @@ object Form1: TForm1
     Top = 432
     Width = 75
     Caption = 'Reload'
-    OnClick = RelodClick
     TabOrder = 4
   end
 end

@@ -25,11 +25,10 @@ type
     Nacitaj: TButton;
     Label1: TLabel;
     ListBox1: TListBox;
-    procedure ListBox1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure ListBox2Click(Sender: TObject);
     procedure ListBox3Click(Sender: TObject);
     procedure NacitajClick(Sender: TObject);
-    procedure RelodClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -52,6 +51,40 @@ implementation
 
 { TForm1 }
 
+procedure TForm1.FormCreate(Sender: TObject);
+var i, pom:integer;
+  pom_s:string;
+begin
+ AssignFile(subor,'tovar.txt');
+ Reset(subor);
+ Readln(subor,pom_s);
+////////////////////
+//Nacitanie
+pocet_riad:=strtoint(pom_s);
+ For i:=1 to pocet_riad do
+     begin
+       readln(subor,pom_s);
+       pom:=Pos(';',pom_s);
+       tovary[i].kod:=Strtoint(Copy(pom_s,1,pom-1));    //nacitanie kodu do pola
+       Delete(pom_s,1,pom); //odreze kod z nacitaneho riadku
+
+        pom:=Pos(';',pom_s);
+        tovary[i].ncena:=strtoint(copy(pom_s,1,pom-1));
+        Delete(pom_s,1,pom); //odreze nakupnu cena z nacitaneho riadku
+
+         pom:=Length(pom_s);
+         tovary[i].pcena:=Strtoint(Copy(pom_s,1,pom));
+     end;
+ CloseFile(subor);
+ /////////////////////////
+ //Vsuvka do Listbox
+ For i:=1 to pocet_riad do
+     begin
+     ListBox1.Items.Add(inttostr(tovary[i].kod));
+     Listbox2.Items.Add(inttostr(tovary[i].ncena));
+     Listbox3.Items.Add(inttostr(tovary[i].pcena));
+     end;
+end;
 procedure TForm1.NacitajClick(Sender: TObject);
 var
   i,pom:integer;     //i=uroven zapisania, pom= nahravanie udajov, pom_s=string sa nahrava
@@ -87,22 +120,8 @@ pocet_riad:=strtoint(pom_s);
      Listbox3.Items.Add(inttostr(tovary[i].pcena));
      end;
 end;
-
-procedure TForm1.ListBox1Click(Sender: TObject);          //na dvojklik mi vyskoci okienko, kde mozem zadavat novu cenu
-var
-  QueryResult: Boolean;
-  UserString: string;
-begin
- begin
-  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString)
-  then ShowMessage(UserString)
- // else
-  //begin
-    //InputQuery('Bleh', 'Snaz sa', UserString);
-    //ShowMessage(UserString);
-  end;
- end;
-
+// Začína Listbox sekcia, klikanie a úprava cien
+//Listbox 2
 procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena
 var
   QueryResult: Boolean;
@@ -116,6 +135,7 @@ begin
  Listbox2.Items.Add(inttostr(tovary[i].ncena));
   end;
 
+//Listbox 3
 procedure TForm1.ListBox3Click(Sender: TObject);     //na klik mi vyskoci okienko,kde zadavam novu pcena
 var
   QueryResult: Boolean;
@@ -128,12 +148,5 @@ begin
  Listbox3.Clear;
  Listbox3.Items.Add(inttostr(tovary[i].pcena));
    end;
-procedure TForm1.RelodClick(Sender: TObject);
-begin
-  //Listbox2.Items.Clear;
-  //Listbox2.Items.Add:=(inttostr(tovary[nacena].ncena));
-  Listbox3.Items.Clear;
-  //Listbox3.Items.Add:=(inttostr(tovary[prcena].pcena));
-end;
 end.
 
