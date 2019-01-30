@@ -80,7 +80,7 @@ pocet_riad:=strtoint(pom_s);
   Reload;
 end;
 
-procedure TForm1Reload;
+procedure TForm1.Reload;
 var i:integer;
 begin
  For i:=1 to pocet_riad do
@@ -99,11 +99,11 @@ var
   UserString: string;
 begin
  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
- then tovary[i].ncena:=strtoint(UserString)
+ then tovary[nacena].ncena:=strtoint(UserString)
  else exit;
 
  Listbox2.Clear;
- Listbox2.Items.Add(inttostr(tovary[i].ncena));
+ Listbox2.Items.Add(inttostr(tovary[nacena].ncena));
   end;
 
 //Listbox 3
