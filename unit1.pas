@@ -28,7 +28,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure ListBox2Click(Sender: TObject);
     procedure ListBox3Click(Sender: TObject);
-
+    procedure Reload;
   private
     { private declarations }
   public
@@ -42,7 +42,6 @@ var
   pocet_riad:integer;
   nacena:integer;   //len na ukazku, neskor sa bude prerabat
   prcena:integer;   //globalna ktora sluzi len na demonstraciu
-  i:integer;
   Form1: TForm1;
 
 implementation
@@ -78,6 +77,12 @@ pocet_riad:=strtoint(pom_s);
  CloseFile(subor);
  /////////////////////////
  //Vsuvka do Listbox
+  Reload;
+end;
+
+procedure TForm1Reload;
+var i:integer;
+begin
  For i:=1 to pocet_riad do
      begin
      ListBox1.Items.Add(inttostr(tovary[i].kod));
