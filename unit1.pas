@@ -17,6 +17,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    Memo1: TMemo;
     Relod: TButton;
     Label2: TLabel;
     Label3: TLabel;
@@ -97,13 +98,22 @@ procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,k
 var
   QueryResult: Boolean;
   UserString: string;
+  i:integer;
 begin
- if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
- then tovary[nacena].ncena:=strtoint(UserString)
- else exit;
+   if ListBox2.ItemIndex > 0 then    //Delete only when a string in the listbox is selected
+    ListBox2.Items.Delete(ListBox1.ItemIndex);
 
+   i:=Listbox2.ItemIndex;
+     i:=i+1;
+     if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+      then tovary[i].ncena:=strtoint(UserString)
+     else exit;
+
+
+ Listbox1.Clear;
  Listbox2.Clear;
- Listbox2.Items.Add(inttostr(tovary[nacena].ncena));
+ Listbox3.Clear;
+ Reload;
   end;
 
 //Listbox 3
@@ -111,14 +121,23 @@ procedure TForm1.ListBox3Click(Sender: TObject);     //na klik mi vyskoci okienk
 var
   QueryResult: Boolean;
   UserString: string;
+  i:integer;
 begin
+   if ListBox3.ItemIndex > 0 then    //Delete only when a string in the listbox is selected
+    ListBox3.Items.Delete(ListBox1.ItemIndex);
+
+   i:=Listbox3.ItemIndex;
+     i:=i+1;
+
  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
   then tovary[i].pcena:=strtoint(UserString)
   else exit;
 
+ Listbox1.Clear;
+ Listbox2.Clear;
  Listbox3.Clear;
- Listbox3.Items.Add(inttostr(tovary[i].pcena));
- //nic
+ Reload;
+
    end;
 end.
 
