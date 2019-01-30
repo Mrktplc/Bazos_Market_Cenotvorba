@@ -42,7 +42,8 @@ var
   subor:textfile;
   pocet_riad:integer;
   nacena:integer;   //len na ukazku, neskor sa bude prerabat
-  prcenai:integer;   //globalna ktora sluzi len na demonstraciu
+  prcena:integer;   //globalna ktora sluzi len na demonstraciu
+  i:integer;
   Form1: TForm1;
 
 implementation
@@ -102,32 +103,36 @@ begin
   end;
  end;
 
-procedure TForm1.ListBox2Click(Sender: TObject);  //ncena
+procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena
 var
   QueryResult: Boolean;
   UserString: string;
 begin
- InputQuery('Nova cena', 'Zadaj novu cenu', UserString);
+ if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+ then tovary[i].ncena:=strtoint(UserString)
+ else exit;
 
-  //nacena:=(InputQuery);
+ Listbox2.Clear;
+ Listbox2.Items.Add(inttostr(tovary[i].ncena));
   end;
 
-procedure TForm1.ListBox3Click(Sender: TObject);     //pcena
+procedure TForm1.ListBox3Click(Sender: TObject);     //na klik mi vyskoci okienko,kde zadavam novu pcena
 var
   QueryResult: Boolean;
   UserString: string;
 begin
- if InputQuery('Nova cena', 'Zadaj novu cenu', UserString)
-  then ShowMessage(UserString);
-   //prcena:=InputQuery;
+ if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+  then tovary[i].pcena:=strtoint(UserString)
+  else exit;
+
+ Listbox3.Clear;
+ Listbox3.Items.Add(inttostr(tovary[i].pcena));
    end;
 procedure TForm1.RelodClick(Sender: TObject);
 begin
-  ListBox1.Items.Clear;
-  Listbox2.Items.Clear;
-  Listbox3.Items.Clear;
-  //Listbox1.Items.Add:=(inttostr(tovary[i].kod));
+  //Listbox2.Items.Clear;
   //Listbox2.Items.Add:=(inttostr(tovary[nacena].ncena));
+  Listbox3.Items.Clear;
   //Listbox3.Items.Add:=(inttostr(tovary[prcena].pcena));
 end;
 end.

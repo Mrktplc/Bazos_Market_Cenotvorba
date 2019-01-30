@@ -42,7 +42,8 @@ var
   subor:textfile;
   pocet_riad:integer;
   nacena:integer;   //len na ukazku, neskor sa bude prerabat
-  prcenai:integer;   //globalna ktora sluzi len na demonstraciu
+  prcena:integer;   //globalna ktora sluzi len na demonstraciu
+  i:integer;
   Form1: TForm1;
 
 implementation
@@ -86,49 +87,32 @@ pocet_riad:=strtoint(pom_s);
      Listbox3.Items.Add(inttostr(tovary[i].pcena));
      end;
 end;
-
-procedure TForm1.ListBox1Click(Sender: TObject);          //na dvojklik mi vyskoci okienko, kde mozem zadavat novu cenu
+// Začína Listbox sekcia, klikanie a úprava cien
+//Listbox 2
+procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena
 var
   QueryResult: Boolean;
   UserString: string;
 begin
- begin
-  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString)
-  then ShowMessage(UserString)
- // else
-  //begin
-    //InputQuery('Bleh', 'Snaz sa', UserString);
-    //ShowMessage(UserString);
+ if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+ then tovary[i].ncena:=strtoint(UserString)
+ else exit;
+
+ Listbox2.Clear;
+ Listbox2.Items.Add(inttostr(tovary[i].ncena));
   end;
- end;
-
-procedure TForm1.ListBox2Click(Sender: TObject);  //ncena
+//Listbox 3
+procedure TForm1.ListBox3Click(Sender: TObject);     //na klik mi vyskoci okienko,kde zadavam novu pcena
 var
   QueryResult: Boolean;
   UserString: string;
 begin
- InputQuery('Nova cena', 'Zadaj novu cenu', UserString);
+ if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+  then tovary[i].pcena:=strtoint(UserString)
+  else exit;
 
-  //nacena:=(InputQuery);
-  end;
-
-procedure TForm1.ListBox3Click(Sender: TObject);     //pcena
-var
-  QueryResult: Boolean;
-  UserString: string;
-begin
- if InputQuery('Nova cena', 'Zadaj novu cenu', UserString)
-  then ShowMessage(UserString);
-   //prcena:=InputQuery;
+ Listbox3.Clear;
+ Listbox3.Items.Add(inttostr(tovary[i].pcena));
    end;
-procedure TForm1.RelodClick(Sender: TObject);
-begin
-  ListBox1.Items.Clear;
-  Listbox2.Items.Clear;
-  Listbox3.Items.Clear;
-  //Listbox1.Items.Add:=(inttostr(tovary[i].kod));
-  //Listbox2.Items.Add:=(inttostr(tovary[nacena].ncena));
-  //Listbox3.Items.Add:=(inttostr(tovary[prcena].pcena));
-end;
 end.
 
