@@ -28,7 +28,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure ListBox2Click(Sender: TObject);
     procedure ListBox3Click(Sender: TObject);
-    procedure NacitajClick(Sender: TObject);
+
   private
     { private declarations }
   public
@@ -85,41 +85,7 @@ pocet_riad:=strtoint(pom_s);
      Listbox3.Items.Add(inttostr(tovary[i].pcena));
      end;
 end;
-procedure TForm1.NacitajClick(Sender: TObject);
-var
-  i,pom:integer;     //i=uroven zapisania, pom= nahravanie udajov, pom_s=string sa nahrava
-  pom_s:string;
-begin
-AssignFile(subor,'tovar.txt');
- Reset(subor);
- Readln(subor,pom_s);
-////////////////////
-//Nacitanie
-pocet_riad:=strtoint(pom_s);
- For i:=1 to pocet_riad do
-     begin
-       readln(subor,pom_s);
-       pom:=Pos(';',pom_s);
-       tovary[i].kod:=Strtoint(Copy(pom_s,1,pom-1));    //nacitanie kodu do pola
-       Delete(pom_s,1,pom); //odreze kod z nacitaneho riadku
 
-        pom:=Pos(';',pom_s);
-        tovary[i].ncena:=strtoint(copy(pom_s,1,pom-1));
-        Delete(pom_s,1,pom); //odreze nakupnu cena z nacitaneho riadku
-
-         pom:=Length(pom_s);
-         tovary[i].pcena:=Strtoint(Copy(pom_s,1,pom));
-     end;
- CloseFile(subor);
- /////////////////////////
- //Vsuvka do Listbox
- For i:=1 to pocet_riad do
-     begin
-     ListBox1.Items.Add(inttostr(tovary[i].kod));
-     Listbox2.Items.Add(inttostr(tovary[i].ncena));
-     Listbox3.Items.Add(inttostr(tovary[i].pcena));
-     end;
-end;
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2
 procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena

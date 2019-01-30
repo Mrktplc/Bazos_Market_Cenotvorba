@@ -113,6 +113,7 @@ begin
 
  Listbox3.Clear;
  Listbox3.Items.Add(inttostr(tovary[i].pcena));
+ //nic
    end;
 end.
 
