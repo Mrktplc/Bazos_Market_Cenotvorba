@@ -17,13 +17,10 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Memo1: TMemo;
-    Relod: TButton;
     Label2: TLabel;
     Label3: TLabel;
     ListBox2: TListBox;
     ListBox3: TListBox;
-    Nacitaj: TButton;
     Label1: TLabel;
     ListBox1: TListBox;
     procedure FormCreate(Sender: TObject);
@@ -84,6 +81,9 @@ end;
 procedure TForm1.Reload;
 var i:integer;
 begin
+ Listbox1.Clear;
+ Listbox2.Clear;
+ Listbox3.Clear;
  For i:=1 to pocet_riad do
      begin
      ListBox1.Items.Add(inttostr(tovary[i].kod));
@@ -96,46 +96,66 @@ end;
 //Listbox 2
 procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena
 var
-  QueryResult: Boolean;
+  QueryResult,success: Boolean;
   UserString: string;
-  i:integer;
+  number,i:integer;
+
 begin
    if ListBox2.ItemIndex > 0 then    //Delete only when a string in the listbox is selected
     ListBox2.Items.Delete(ListBox1.ItemIndex);
 
    i:=Listbox2.ItemIndex;
      i:=i+1;
-     if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
-      then tovary[i].ncena:=strtoint(UserString)
+/////////////////////////////////////////////////////
+     if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True        //nacitanie novej ceny, dorobit try
+      then
+       begin
+         success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena
+         if not success then
+          ShowMessage('Zadaj cenu, nie abecedu!')
+       end
      else exit;
+//////////////////////////////////
+    if number>=0     //kontrola ceny aby nebola zaporna
+     then
+   tovary[i].ncena:=number
+        else
+        ShowMessage('Zadaj vyssiu cenu');
 
-
- Listbox1.Clear;
- Listbox2.Clear;
- Listbox3.Clear;
+//////////////////////////////////
  Reload;
   end;
 
 //Listbox 3
 procedure TForm1.ListBox3Click(Sender: TObject);     //na klik mi vyskoci okienko,kde zadavam novu pcena
 var
-  QueryResult: Boolean;
+  QueryResult,success: Boolean;
   UserString: string;
-  i:integer;
+  number,i:integer;
 begin
    if ListBox3.ItemIndex > 0 then    //Delete only when a string in the listbox is selected
     ListBox3.Items.Delete(ListBox1.ItemIndex);
 
    i:=Listbox3.ItemIndex;
      i:=i+1;
+/////////////////////////////////
+ if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True  //zadavanie novej ceny+ robit overovanie
+  then
+    begin
+         success:=TryStrtoInt(UserString, number);
+         if not success then
+          ShowMessage('Zadaj cenu, nie abecedu!')                                   //odobrit aby tam zostala cena,hodnota
 
- if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
-  then tovary[i].pcena:=strtoint(UserString)
-  else exit;
+       end
+     else exit;
 
- Listbox1.Clear;
- Listbox2.Clear;
- Listbox3.Clear;
+////////////////////////////////
+ if number>=0    //kontroluje aby cena nebola zaporna
+     then
+   tovary[i].pcena:=number
+        else
+        ShowMessage('Zadaj vyssiu cenu');
+/////////////////////////////////
  Reload;
 
    end;
