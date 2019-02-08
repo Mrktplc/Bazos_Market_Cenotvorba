@@ -111,10 +111,14 @@ begin
       then
        begin
          success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena
-         if not success then
-          ShowMessage('Zadaj cenu, nie abecedu!')
+         if not success then begin
+          ShowMessage('Zadaj cenu, nie abecedu!');
+          exit;
+         end;
        end
-     else exit;
+     else begin
+          exit;
+     end;
 //////////////////////////////////
     if number>=0     //kontrola ceny aby nebola zaporna
      then
