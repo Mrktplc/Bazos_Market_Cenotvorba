@@ -9,8 +9,8 @@ uses
 
 type
   tovar=record
-    ncena:integer; //nakupna cena
-    pcena:integer; //predajna cena
+    ncena:real; //nakupna cena
+    pcena:Real; //predajna cena
     kod:integer; //kod tovaru
   end;
 
@@ -27,6 +27,7 @@ type
     procedure ListBox2Click(Sender: TObject);
     procedure ListBox3Click(Sender: TObject);
     procedure Reload;
+    procedure Porov(i:Integer);
   private
     { private declarations }
   public
@@ -83,15 +84,26 @@ var i:integer;
 begin
  Listbox1.Clear;
  Listbox2.Clear;
- Listbox3.Clear;
+ Listbox3.Clear;             //dorobit cenu
  For i:=1 to pocet_riad do
      begin
      ListBox1.Items.Add(inttostr(tovary[i].kod));
-     Listbox2.Items.Add(inttostr(tovary[i].ncena));
-     Listbox3.Items.Add(inttostr(tovary[i].pcena));
+     Listbox2.Items.Add(floattostr(tovary[i].ncena)+'€');
+     Listbox3.Items.Add(floattostr(tovary[i].pcena)+'€');
      end;
 end;
+procedure TForm1.Porov(i:Integer);
+var j:integer;
+begin
+ begin
+ If tovary[i].ncena <> tovary[i].pcena
+     then
+      Showmessage('Zadaj nizsiu cenu')
+     else exit;
+    end
+    end;
 
+ end;
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2
 procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena
@@ -101,27 +113,28 @@ var
   number,i:integer;
 
 begin
-   if ListBox2.ItemIndex > 0 then    //Delete only when a string in the listbox is selected
+ //////////////////////////////////////////////////// zistuje na ktorej pozicii sa nachadzame
+   if ListBox2.ItemIndex > 0 then
     ListBox2.Items.Delete(ListBox1.ItemIndex);
 
    i:=Listbox2.ItemIndex;
      i:=i+1;
-/////////////////////////////////////////////////////
-     if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True        //nacitanie novej ceny, dorobit try
+///////////////////////////////////////////////////// nepusti ked clovek zada string
+     if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
       then
        begin
          success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena
          if not success then begin
           ShowMessage('Zadaj cenu, nie abecedu!');
-          //exit;
           exit;
          end;
        end
      else begin
-          //exit;
           exit;
      end;
-//////////////////////////////////
+/////////////////////////////////// porovnavanie nceny a pceny
+Porov(i);
+////////////////////////////////// nepusti ked cena je mensia ako nula
     if number>=0     //kontrola ceny aby nebola zaporna
      then
    tovary[i].ncena:=number
@@ -139,24 +152,27 @@ var
   UserString: string;
   number,i:integer;
 begin
+ ///////////////////////////////// zistuje miesto v poli
    if ListBox3.ItemIndex > 0 then    //Delete only when a string in the listbox is selected
     ListBox3.Items.Delete(ListBox1.ItemIndex);
 
    i:=Listbox3.ItemIndex;
      i:=i+1;
-/////////////////////////////////
+///////////////////////////////// nepusti zadavanie slov ale iba ceny
  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True  //zadavanie novej ceny+ robit overovanie
   then
     begin
          success:=TryStrtoInt(UserString, number);
-         if not success then
-          ShowMessage('Zadaj cenu, nie abecedu!')                                   //odobrit aby tam zostala cena,hodnota
-
+         if not success then begin
+          ShowMessage('Zadaj cenu, nie abecedu!');  //vyskoci okno aby
+          exit;
+          end;
        end
-     else exit;
-
-////////////////////////////////
- if number>=0    //kontroluje aby cena nebola zaporna
+     else begin
+          exit;
+       end;
+////////////////////////////////// kontroluje aby cena nebola zaporna
+ if number>=0
      then
    tovary[i].pcena:=number
         else
