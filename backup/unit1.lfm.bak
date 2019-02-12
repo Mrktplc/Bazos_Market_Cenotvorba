@@ -1,13 +1,13 @@
 object Form1: TForm1
-  Left = 1254
+  Left = 1427
   Height = 488
-  Top = 143
+  Top = 47
   Width = 438
   Caption = 'Form1'
   ClientHeight = 488
   ClientWidth = 438
   OnCreate = FormCreate
-  LCLVersion = '1.4.0.4'
+  LCLVersion = '1.6.4.0'
   object ListBox1: TListBox
     Left = 16
     Height = 312
@@ -30,6 +30,7 @@ object Form1: TForm1
     Top = 40
     Width = 72
     ItemHeight = 0
+    MultiSelect = True
     OnClick = ListBox2Click
     TabOrder = 1
   end
@@ -39,6 +40,7 @@ object Form1: TForm1
     Top = 40
     Width = 80
     ItemHeight = 0
+    MultiSelect = True
     OnClick = ListBox3Click
     TabOrder = 2
   end
@@ -57,5 +59,24 @@ object Form1: TForm1
     Width = 74
     Caption = 'Predajna cena'
     ParentColor = False
+  end
+  object Button1: TButton
+    Left = 16
+    Height = 25
+    Top = 424
+    Width = 75
+    Caption = 'Button1'
+    OnClick = Button1Click
+    TabOrder = 3
+  end
+  object Memo1: TMemo
+    Left = 280
+    Height = 82
+    Top = 376
+    Width = 120
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 4
   end
 end
