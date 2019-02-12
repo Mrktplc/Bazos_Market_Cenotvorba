@@ -103,7 +103,6 @@ begin
     end
     end;
 
- end;
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2
 procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena
@@ -113,7 +112,7 @@ var
   number,i:integer;
 
 begin
- //////////////////////////////////////////////////// zistuje na ktorej pozicii sa nachadzame
+ #################################################// zistuje na ktorej pozicii sa nachadzame
    if ListBox2.ItemIndex > 0 then
     ListBox2.Items.Delete(ListBox1.ItemIndex);
 
