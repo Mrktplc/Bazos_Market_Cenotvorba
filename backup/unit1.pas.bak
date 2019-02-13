@@ -9,25 +9,29 @@ uses
 
 type
   tovar=record
-    ncena:real; //nakupna cena
-    pcena:Real; //predajna cena
+    ncena:currency; //nakupna cena
+    pcena:Currency; //predajna cena
     kod:integer; //kod tovaru
   end;
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    Button1: TButton;
     Label2: TLabel;
     Label3: TLabel;
     ListBox2: TListBox;
     ListBox3: TListBox;
     Label1: TLabel;
     ListBox1: TListBox;
+    Memo1: TMemo;
+    procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ListBox2Click(Sender: TObject);
     procedure ListBox3Click(Sender: TObject);
     procedure Reload;
     procedure Porov(i:Integer);
+    procedure Zapis;
   private
     { private declarations }
   public
@@ -39,8 +43,8 @@ var
   tovary:array[1..N]of tovar;
   subor:textfile;
   pocet_riad:integer;
-  nacena:integer;   //len na ukazku, neskor sa bude prerabat
-  prcena:integer;   //globalna ktora sluzi len na demonstraciu
+  nacena:currency;   //len na ukazku, neskor sa bude prerabat
+  prcena:currency;   //globalna ktora sluzi len na demonstraciu
   Form1: TForm1;
 
 implementation
@@ -79,31 +83,49 @@ pocet_riad:=strtoint(pom_s);
   Reload;
 end;
 
+procedure TForm1.Button1Click(Sender: TObject);
+var i:integer;
+begin
+ Porov(i);
+end;
+
 procedure TForm1.Reload;
 var i:integer;
 begin
  Listbox1.Clear;
  Listbox2.Clear;
- Listbox3.Clear;             //dorobit cenu
+ Listbox3.Clear;                               //dorobit cenu
  For i:=1 to pocet_riad do
      begin
      ListBox1.Items.Add(inttostr(tovary[i].kod));
-     Listbox2.Items.Add(floattostr(tovary[i].ncena)+'€');
-     Listbox3.Items.Add(floattostr(tovary[i].pcena)+'€');
+     Listbox2.Items.Add(currtostr(tovary[i].ncena)+'€');
+     Listbox3.Items.Add(currtostr(tovary[i].pcena)+'€');
      end;
-end;
+ end;
 procedure TForm1.Porov(i:Integer);
-var j:integer;
 begin
- begin
- If tovary[i].ncena <> tovary[i].pcena
+ If tovary[i].ncena > tovary[i].pcena
      then
       Showmessage('Zadaj nizsiu cenu')
      else exit;
-    end
+ Memo1.Append(currtostr(tovary[i].ncena));
     end;
+procedure TForm1.Zapis;
+var i:integer;
+begin
+ Assignfile(subor,'cennik4.txt');
+ Rewrite(subor);
+ writeln(subor,pocet_riad);
+ For i:=1 to 3 do
+     begin
+     writeln(subor,tovary[i].kod);
+     writeln(subor,tovary[i].ncena);
+     writeln(subor,tovary[i].pcena);
+     end;
+ CloseFile(subor);
+end;
 
- end;
+
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2
 procedure TForm1.ListBox2Click(Sender: TObject);  //na klik mi vyskoci okienko,kde zadavam novu ncena
@@ -113,13 +135,13 @@ var
   number,i:integer;
 
 begin
- //////////////////////////////////////////////////// zistuje na ktorej pozicii sa nachadzame
+//////////////////////////////////////////////////// zistuje na ktorej pozicii sa nachadzame
    if ListBox2.ItemIndex > 0 then
-    ListBox2.Items.Delete(ListBox1.ItemIndex);
+    ListBox3.ItemIndex;
 
    i:=Listbox2.ItemIndex;
      i:=i+1;
-///////////////////////////////////////////////////// nepusti ked clovek zada string
+////////////////////////////////////////////////////  nepusti ked clovek zada string
      if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
       then
        begin
@@ -133,16 +155,16 @@ begin
           exit;
      end;
 /////////////////////////////////// porovnavanie nceny a pceny
-Porov(i);
+  Porov(i);
 ////////////////////////////////// nepusti ked cena je mensia ako nula
-    if number>=0     //kontrola ceny aby nebola zaporna
+    if number>0     //kontrola ceny aby nebola zaporna
      then
    tovary[i].ncena:=number
         else
         ShowMessage('Zadaj vyssiu cenu');
 
 //////////////////////////////////
- Reload;
+Reload;
   end;
 
 //Listbox 3
@@ -171,12 +193,15 @@ begin
      else begin
           exit;
        end;
+
 ////////////////////////////////// kontroluje aby cena nebola zaporna
- if number>=0
+
+
+ if number>0
      then
    tovary[i].pcena:=number
         else
-        ShowMessage('Zadaj vyssiu cenu');
+        ShowMessage('Zadaj nenulovu cenu');
 /////////////////////////////////
  Reload;
 
