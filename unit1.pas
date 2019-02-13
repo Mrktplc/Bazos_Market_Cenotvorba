@@ -9,8 +9,8 @@ uses
 
 type
   tovar=record
-    ncena:real; //nakupna cena
-    pcena:real; //predajna cena
+    ncena:currency; //nakupna cena
+    pcena:Currency; //predajna cena
     kod:integer; //kod tovaru
   end;
 
@@ -43,8 +43,8 @@ var
   tovary:array[1..N]of tovar;
   subor:textfile;
   pocet_riad:integer;
-  nacena:real;   //len na ukazku, neskor sa bude prerabat
-  prcena:real;   //globalna ktora sluzi len na demonstraciu
+  nacena:currency;   //len na ukazku, neskor sa bude prerabat
+  prcena:currency;   //globalna ktora sluzi len na demonstraciu
   Form1: TForm1;
 
 implementation
@@ -57,7 +57,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var i, pom:integer;
   pom_s:string;
 begin
- AssignFile(subor,'cennik.txt');
+ AssignFile(subor,'tovar.txt');
  Reset(subor);
  Readln(subor,pom_s);
 ////////////////////
@@ -71,11 +71,11 @@ pocet_riad:=strtoint(pom_s);
        Delete(pom_s,1,pom); //odreze kod z nacitaneho riadku
 
         pom:=Pos(';',pom_s);
-        tovary[i].ncena:=strtofloat(copy(pom_s,1,pom-1));
+        tovary[i].ncena:=strtoint(copy(pom_s,1,pom-1));
         Delete(pom_s,1,pom); //odreze nakupnu cena z nacitaneho riadku
 
          pom:=Length(pom_s);
-         tovary[i].pcena:=Strtofloat(Copy(pom_s,1,pom));
+         tovary[i].pcena:=Strtoint(Copy(pom_s,1,pom));
      end;
  CloseFile(subor);
  /////////////////////////
@@ -84,7 +84,9 @@ pocet_riad:=strtoint(pom_s);
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
+var i:integer;
 begin
+Memo1.Append(currtostr(tovary[i].ncena));
 end;
 
 procedure TForm1.Reload;
@@ -112,33 +114,22 @@ begin
 
     end;
 procedure TForm1.Zapis;
-var t1,t2,t3:string;
-  i:integer;
+var i:integer;
+  t1,t2,t3:string;
 begin
-  AssignFile(subor,'cennik5.txt');
+ Assignfile(subor,'cennik5.txt');
  Rewrite(subor);
  writeln(subor,pocet_riad);
- For i:=1 to 3 do
-   begin
-  t1:=inttostr(tovary[i].kod);
-  t2:=floattostr(tovary[i].ncena);
-  t3:=floattostr(tovary[i].pcena);
-  memo1.Append(t1+'_'+t2+'_'+t3);
-  writeln(subor,t1+';'+t2+';'+t3);
+ For i:=1 to pocet_riad do
+     begin
+     t1:=inttostr(tovary[i].kod);
+     t2:=floattostr(tovary[i].ncena);
+     t3:=floattostr(tovary[i].pcena);
+     writeln(subor,t1+';'+t2+';'+t3);
      end;
-
-                                  {CenaStrList:= TStringList.Create;
-                                  CenaStrList.loadFromFile('cennik3.txt');
-                                    For i:=1 to pocet_riad do
-                                        begin
-                                             CenaNovyRiadok:=(t1+';'+t2+';'+t3);
-                                             CenaStrList.Text := StringReplace(CenaStrList.Text,
-                                                              CenaNovRiadok, [rfIgnoreCase]);
-                                    end;
-                                    CenaStrList.SaveToFile('cennik3.txt');
-                                    CenaStrList.Free;}
  CloseFile(subor);
 end;
+
 
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2
@@ -180,6 +171,7 @@ begin
    tovary[i].ncena:=number
         else
         ShowMessage('Zadaj vyssiu cenu');
+
 //////////////////////////////////
 Zapis;
 Reload;
@@ -213,13 +205,15 @@ begin
        end;
 
 ////////////////////////////////// kontroluje aby cena nebola zaporna
+
+
  if number>0
      then
    tovary[i].pcena:=number
         else
         ShowMessage('Zadaj nenulovu cenu');
 /////////////////////////////////
-Zapis;
+ Zapis;
  Reload;
 
    end;

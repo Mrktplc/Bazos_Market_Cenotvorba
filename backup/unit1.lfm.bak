@@ -1,13 +1,13 @@
 object Form1: TForm1
-  Left = 934
+  Left = 1452
   Height = 488
-  Top = 148
+  Top = 72
   Width = 315
   Caption = 'Form1'
   ClientHeight = 488
   ClientWidth = 315
   OnCreate = FormCreate
-  LCLVersion = '1.4.0.4'
+  LCLVersion = '1.6.4.0'
   object ListBox1: TListBox
     Left = 16
     Height = 312
@@ -70,10 +70,10 @@ object Form1: TForm1
     TabOrder = 3
   end
   object Memo1: TMemo
-    Left = 152
-    Height = 90
-    Top = 384
-    Width = 150
+    Left = 280
+    Height = 82
+    Top = 376
+    Width = 120
     Lines.Strings = (
       'Memo1'
     )
