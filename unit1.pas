@@ -30,7 +30,7 @@ type
     procedure ListBox2Click(Sender: TObject);
     procedure ListBox3Click(Sender: TObject);
     procedure Reload;
-    procedure Porov(i:Integer);
+    function privelkaNC(iTovaru, novaNC:Integer):boolean;
     procedure Zapis;
   private
     { private declarations }
@@ -102,12 +102,15 @@ begin
      Listbox3.Items.Add(currtostr(tovary[i].pcena)+'€');
      end;
  end;
-procedure TForm1.Porov(i:Integer);
+function TForm1.privelkaNC(iTovaru, novaNC:Integer):boolean;
 begin
- If tovary[i].ncena > tovary[i].pcena
-     then
-      Showmessage('Zadaj nizsiu cenu')
-     else exit;
+ If novaNC > tovary[iTovaru].pcena
+     then begin
+      Showmessage('Zadaj nizsiu cenu');
+      exit(true);
+     end else begin
+     exit(false);
+     end;
 
     end;
 procedure TForm1.Zapis;
@@ -133,8 +136,9 @@ var
   QueryResult,success: Boolean;
   UserString: string;
   number,i:integer;
-
+  jePrivelkaNC:boolean;
 begin
+ jePrivelkaNC:=false;
 //////////////////////////////////////////////////// zistuje na ktorej pozicii sa nachadzame
    if ListBox2.ItemIndex > 0 then
     ListBox3.ItemIndex;
@@ -155,7 +159,10 @@ begin
           exit;
      end;
 /////////////////////////////////// porovnavanie nceny a pceny
-  Porov(i);
+  jePrivelkaNC:=privelkaNC(i,number);
+  if jePrivelkaNC then begin
+   exit;
+   end;
 ////////////////////////////////// nepusti ked cena je mensia ako nula
     if number>0     //kontrola ceny aby nebola zaporna
      then
