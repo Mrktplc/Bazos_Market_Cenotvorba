@@ -27,7 +27,7 @@ type
     procedure ListBox2Click(Sender: TObject);
     procedure ListBox3Click(Sender: TObject);
     procedure Reload;
-    procedure Porov(i:Integer);
+    function privelkaNC(iTovaru, novaNC:Integer): boolean;
   private
     { private declarations }
   public
@@ -92,16 +92,16 @@ begin
      Listbox3.Items.Add(floattostr(tovary[i].pcena)+'€');
      end;
 end;
-procedure TForm1.Porov(i:Integer);
-var j:integer;
-begin
+function TForm1.privelkaNC(iTovaru, novaNC:Integer): boolean;
  begin
- If tovary[i].ncena <> tovary[i].pcena
-     then
-      Showmessage('Zadaj nizsiu cenu')
-     else exit;
-    end
-    end;
+ If novaNC > tovary[iTovaru].pcena
+     then begin
+      Showmessage('Zadaj nizsiu cenu');
+      exit(true);
+     end else begin
+      exit(false);
+     end;
+ end;
 
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2
@@ -110,8 +110,10 @@ var
   QueryResult,success: Boolean;
   UserString: string;
   number,i:integer;
+  jePrivelkaNC: boolean;
 
 begin
+jePrivelkaNC:= false;
  //////////////////////////////////////////////////// zistuje na ktorej pozicii sa nachadzame
    if ListBox2.ItemIndex > 0 then
     ListBox2.Items.Delete(ListBox1.ItemIndex);
@@ -132,7 +134,10 @@ begin
           exit;
      end;
 /////////////////////////////////// porovnavanie nceny a pceny
-Porov(i);
+jePrivelkaNC:= privelkaNC(i, number);
+if jePrivelkaNC then begin
+   exit;
+end;
 ////////////////////////////////// nepusti ked cena je mensia ako nula
     if number>=0     //kontrola ceny aby nebola zaporna
      then
@@ -142,7 +147,7 @@ Porov(i);
 
 //////////////////////////////////
  Reload;
-  end;
+ end;
 
 //Listbox 3
 procedure TForm1.ListBox3Click(Sender: TObject);     //na klik mi vyskoci okienko,kde zadavam novu pcena
