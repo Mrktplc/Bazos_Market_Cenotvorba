@@ -9,6 +9,7 @@ uses
 
 type
   tovar=record
+    nazov:string; //nazov produktu
     ncena:currency; //nakupna cena
     pcena:Currency; //predajna cena
     kod:integer; //kod tovaru
@@ -20,10 +21,12 @@ type
     Button1: TButton;
     Label2: TLabel;
     Label3: TLabel;
+    Label4: TLabel;
     ListBox2: TListBox;
     ListBox3: TListBox;
     Label1: TLabel;
     ListBox1: TListBox;
+    ListBox4: TListBox;
     Memo1: TMemo;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -31,6 +34,7 @@ type
     procedure ListBox3Click(Sender: TObject);
     procedure Reload;
     function privelkaNC(iTovaru, novaNC:Integer):boolean;
+    function nizkaPC(iTovaru, novaPC:integer):boolean;
     procedure Zapis;
   private
     { private declarations }
@@ -55,9 +59,9 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 var i, pom:integer;
-  pom_s:string;
+  pom_s,pom_t:string;
 begin
- AssignFile(subor,'tovar.txt');
+ AssignFile(subor,'tovar3.txt');
  Reset(subor);
  Readln(subor,pom_s);
 ////////////////////
@@ -69,6 +73,11 @@ pocet_riad:=strtoint(pom_s);
        pom:=Pos(';',pom_s);
        tovary[i].kod:=Strtoint(Copy(pom_s,1,pom-1));    //nacitanie kodu do pola
        Delete(pom_s,1,pom); //odreze kod z nacitaneho riadku
+
+       pom:=Pos(';',pom_s);
+       tovary[i].nazov:=copy(pom_s,1,pom-1);
+       delete(pom_s,1,pom);
+
 
         pom:=Pos(';',pom_s);
         tovary[i].ncena:=strtoint(copy(pom_s,1,pom-1));
@@ -91,15 +100,27 @@ end;
 
 procedure TForm1.Reload;
 var i:integer;
+  c1,c2:string;
+  str,str2:Currency;
 begin
  Listbox1.Clear;
  Listbox2.Clear;
- Listbox3.Clear;                               //dorobit cenu
+ Listbox3.Clear;            //dorobit cenu
+ Listbox4.Clear;
+ //c1:=currtostr(tovary[i].ncena);
+ //c2:=currtostr(tovary[i].pcena);
+ //str:=strtocurr(c1);
+ //str2:=strtocurr(c2);
  For i:=1 to pocet_riad do
      begin
+         c1:=currtostr(tovary[i].ncena);
+ c2:=currtostr(tovary[i].pcena);
+ str:=strtocurr(c1);
+ str2:=strtocurr(c2);
      ListBox1.Items.Add(inttostr(tovary[i].kod));
-     Listbox2.Items.Add(currtostr(tovary[i].ncena)+'€');
-     Listbox3.Items.Add(currtostr(tovary[i].pcena)+'€');
+     Listbox2.Items.Add(currtostrf(str, ffcurrency, 2)+'€');
+     Listbox3.Items.Add(currtostrf(str2, ffcurrency, 2)+'€');
+     Listbox4.Items.Add(tovary[i].nazov);
      end;
  end;
 function TForm1.privelkaNC(iTovaru, novaNC:Integer):boolean;
@@ -113,9 +134,20 @@ begin
      end;
 
     end;
+function TForm1.nizkaPC(iTovaru, novaPC:integer):boolean;
+begin
+  IF novaPC < tovary[iTovaru].ncena
+      then begin
+       Showmessage('Zadaj vyssiu cenu!');
+       exit(true);
+      end else begin
+           exit(false);
+      end;
+end;
+
 procedure TForm1.Zapis;
 var i:integer;
-  t1,t2,t3:string;
+  t1,t2,t3,t4:string;
 begin
  Assignfile(subor,'cennik5.txt');
  Rewrite(subor);
@@ -123,9 +155,10 @@ begin
  For i:=1 to pocet_riad do
      begin
      t1:=inttostr(tovary[i].kod);
-     t2:=floattostr(tovary[i].ncena);
-     t3:=floattostr(tovary[i].pcena);
-     writeln(subor,t1+';'+t2+';'+t3);
+     t2:=currtostr(tovary[i].ncena);
+     t3:=currtostr(tovary[i].pcena);
+     t4:=(tovary[i].nazov);
+     writeln(subor,t1+';'+t4+';'+t2+';'+t3);
      end;
  CloseFile(subor);
 end;
@@ -173,6 +206,7 @@ begin
         ShowMessage('Zadaj vyssiu cenu');
 
 //////////////////////////////////
+Zapis;
 Reload;
   end;
 
@@ -182,7 +216,9 @@ var
   QueryResult,success: Boolean;
   UserString: string;
   number,i:integer;
+  jeNizkaPC:boolean;
 begin
+     jeNizkaPC:=false;
  ///////////////////////////////// zistuje miesto v poli
    if ListBox3.ItemIndex > 0 then    //Delete only when a string in the listbox is selected
     ListBox3.Items.Delete(ListBox1.ItemIndex);
@@ -203,15 +239,19 @@ begin
           exit;
        end;
 
+ ///////////////////////////////// porovnanie pceny a nceny, pcene nemoze byt mensia ako ncena
+  jeNizkaPC:=nizkaPC(i, number);
+  IF jeNizkaPC THEN begin
+   exit;
+   end;
 ////////////////////////////////// kontroluje aby cena nebola zaporna
-
-
  if number>0
      then
    tovary[i].pcena:=number
         else
         ShowMessage('Zadaj nenulovu cenu');
 /////////////////////////////////
+ Zapis;
  Reload;
 
    end;
