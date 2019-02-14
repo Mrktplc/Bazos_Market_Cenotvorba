@@ -1,13 +1,13 @@
 object Form1: TForm1
-  Left = 1350
+  Left = 1086
   Height = 489
-  Top = 177
-  Width = 497
+  Top = 154
+  Width = 402
   Caption = 'Form1'
   ClientHeight = 489
-  ClientWidth = 497
+  ClientWidth = 402
   OnCreate = FormCreate
-  LCLVersion = '1.6.4.0'
+  LCLVersion = '1.4.0.4'
   object ListBox1: TListBox
     Left = 16
     Height = 312

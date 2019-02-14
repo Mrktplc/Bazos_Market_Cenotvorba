@@ -107,10 +107,6 @@ begin
  Listbox2.Clear;
  Listbox3.Clear;            //dorobit cenu
  Listbox4.Clear;
- //c1:=currtostr(tovary[i].ncena);
- //c2:=currtostr(tovary[i].pcena);
- //str:=strtocurr(c1);
- //str2:=strtocurr(c2);
  For i:=1 to pocet_riad do
      begin
  c1:=currtostr(tovary[i].ncena);

@@ -107,19 +107,15 @@ begin
  Listbox2.Clear;
  Listbox3.Clear;            //dorobit cenu
  Listbox4.Clear;
- //c1:=currtostr(tovary[i].ncena);
- //c2:=currtostr(tovary[i].pcena);
- //str:=strtocurr(c1);
- //str2:=strtocurr(c2);
  For i:=1 to pocet_riad do
      begin
-         c1:=currtostr(tovary[i].ncena);
+ c1:=currtostr(tovary[i].ncena);
  c2:=currtostr(tovary[i].pcena);
  str:=strtocurr(c1);
  str2:=strtocurr(c2);
      ListBox1.Items.Add(inttostr(tovary[i].kod));
-     Listbox2.Items.Add(currtostrf(str, ffcurrency, 2)+'€');
-     Listbox3.Items.Add(currtostrf(str2, ffcurrency, 2)+'€');
+     Listbox2.Items.Add(currtostrf(str, ffcurrency, 2));
+     Listbox3.Items.Add(currtostrf(str2, ffcurrency, 2));
      Listbox4.Items.Add(tovary[i].nazov);
      end;
  end;
