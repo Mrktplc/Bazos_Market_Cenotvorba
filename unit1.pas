@@ -37,6 +37,7 @@ type
     function privelkaNC(iTovaru, novaNC:Integer):boolean;
     function nizkaPC(iTovaru, novaPC:integer):boolean;
     procedure Zapis;
+    Function Centy;
   private
     { private declarations }
   public
@@ -160,7 +161,10 @@ begin
      end;
  CloseFile(subor);
 end;
+Function TForm1.Centy();
+begin
 
+end;
 
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2

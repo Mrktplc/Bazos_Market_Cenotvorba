@@ -197,7 +197,7 @@ begin
    exit;
    end;
 ////////////////////////////////// nepusti ked cena je mensia ako nula
-    if number>0     //kontrola ceny aby nebola zaporna
+    if number>=0     //kontrola ceny aby nebola zaporna
      then
    tovary[i].ncena:=number
         else
@@ -243,7 +243,7 @@ begin
    exit;
    end;
 ////////////////////////////////// kontroluje aby cena nebola zaporna
- if number>0
+ if number>=0
      then
    tovary[i].pcena:=number
         else
