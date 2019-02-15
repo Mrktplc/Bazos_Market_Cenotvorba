@@ -5,7 +5,8 @@ unit Unit1;                                     //Nova Aplikacia cenotvorba
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls, LCLType;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  LCLType, ExtCtrls;
 
 type
   tovar=record
@@ -18,7 +19,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
+    Image1: TImage;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -61,6 +62,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var i, pom:integer;
   pom_s,pom_t:string;
 begin
+ image1.picture.LoadFromFile('logo.bmp');
  AssignFile(subor,'tovar3.txt');
  Reset(subor);
  Readln(subor,pom_s);
@@ -114,8 +116,8 @@ begin
  str:=strtocurr(c1);
  str2:=strtocurr(c2);
      ListBox1.Items.Add(inttostr(tovary[i].kod));
-     Listbox2.Items.Add(currtostrf(str, ffcurrency, 2));
-     Listbox3.Items.Add(currtostrf(str2, ffcurrency, 2));
+     Listbox2.Items.Add(currtostrf(str, ffcurrency,2));
+     Listbox3.Items.Add(currtostrf(str2, ffcurrency,2));
      Listbox4.Items.Add(tovary[i].nazov);
      end;
  end;

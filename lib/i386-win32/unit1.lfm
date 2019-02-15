@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 1086
+  Left = 1095
   Height = 489
-  Top = 154
+  Top = 127
   Width = 402
   Caption = 'Form1'
   ClientHeight = 489
@@ -60,15 +60,6 @@ object Form1: TForm1
     Caption = 'Predajna cena'
     ParentColor = False
   end
-  object Button1: TButton
-    Left = 16
-    Height = 25
-    Top = 424
-    Width = 75
-    Caption = 'Button1'
-    OnClick = Button1Click
-    TabOrder = 3
-  end
   object Memo1: TMemo
     Left = 280
     Height = 82
@@ -77,7 +68,7 @@ object Form1: TForm1
     Lines.Strings = (
       'Memo1'
     )
-    TabOrder = 4
+    TabOrder = 3
   end
   object ListBox4: TListBox
     Left = 104
@@ -85,7 +76,7 @@ object Form1: TForm1
     Top = 40
     Width = 96
     ItemHeight = 0
-    TabOrder = 5
+    TabOrder = 4
   end
   object Label4: TLabel
     Left = 136
@@ -94,5 +85,11 @@ object Form1: TForm1
     Width = 33
     Caption = 'Nazov'
     ParentColor = False
+  end
+  object Image1: TImage
+    Left = 15
+    Height = 75
+    Top = 392
+    Width = 138
   end
 end
