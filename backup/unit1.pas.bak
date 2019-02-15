@@ -11,8 +11,8 @@ uses
 type
   tovar=record
     nazov:string; //nazov produktu
-    ncena:currency; //nakupna cena
-    pcena:Currency; //predajna cena
+    ncena:real; //nakupna cena
+    pcena:real; //predajna cena
     kod:integer; //kod tovaru
   end;
 
@@ -48,8 +48,8 @@ var
   tovary:array[1..N]of tovar;
   subor:textfile;
   pocet_riad:integer;
-  nacena:currency;   //len na ukazku, neskor sa bude prerabat
-  prcena:currency;   //globalna ktora sluzi len na demonstraciu
+  nacena:integer;   //len na ukazku, neskor sa bude prerabat
+  prcena:integer;   //globalna ktora sluzi len na demonstraciu
   Form1: TForm1;
 
 implementation
@@ -102,8 +102,8 @@ end;
 
 procedure TForm1.Reload;
 var i:integer;
-  c1,c2:string;
-  str,str2:Currency;
+  t1,t2:string;
+  c1,c2,c3,c4:real;
 begin
  Listbox1.Clear;
  Listbox2.Clear;
@@ -111,13 +111,21 @@ begin
  Listbox4.Clear;
  For i:=1 to pocet_riad do
      begin
- c1:=currtostr(tovary[i].ncena);
- c2:=currtostr(tovary[i].pcena);
- str:=strtocurr(c1);
- str2:=strtocurr(c2);
+     {
+     c1:=(tovary[i].ncena) / 100;
+     c2:=(tovary[i].pcena) / 100;
+     c3:=StrtoFloat(FormatFloat('0.##',(c1)));
+     c4:=StrtoFloat(FormatFloat('0.##',(c2)));
      ListBox1.Items.Add(inttostr(tovary[i].kod));
-     Listbox2.Items.Add(currtostrf(str, ffcurrency,2));
-     Listbox3.Items.Add(currtostrf(str2, ffcurrency,2));
+     Listbox2.Items.Add(FloattoStr(c3));
+     Listbox3.Items.Add(FloattoStr(c4));
+     Listbox4.Items.Add(tovary[i].nazov);
+     }
+     c1:=(tovary[i].ncena) / 100;
+     c2:=(tovary[i].pcena) / 100;
+     ListBox1.Items.Add(inttostr(tovary[i].kod));
+     Listbox2.Items.Add(FormatFloat('0.## €',(c1)));
+     Listbox3.Items.Add(FormatFloat('0.## €',(c2)));
      Listbox4.Items.Add(tovary[i].nazov);
      end;
  end;
@@ -136,10 +144,11 @@ function TForm1.nizkaPC(iTovaru, novaPC:integer):boolean;
 begin
   IF novaPC < tovary[iTovaru].ncena
       then begin
-       Showmessage('Zadaj vyssiu cenu!');
-       exit(true);
+      if MessageDlg('Zmena predajnej ceny', 'Chcete nastavit predajnu cenu nizsiu ako nakupnu cenu?', mtConfirmation,
+   [mbYes, mbNo],0) = mrYes then
+       exit(false);
       end else begin
-           exit(false);
+           exit(true);
       end;
 end;
 
@@ -153,14 +162,13 @@ begin
  For i:=1 to pocet_riad do
      begin
      t1:=inttostr(tovary[i].kod);
-     t2:=currtostr(tovary[i].ncena);
-     t3:=currtostr(tovary[i].pcena);
+     t2:=floattostr(tovary[i].ncena);
+     t3:=floattostr(tovary[i].pcena);
      t4:=(tovary[i].nazov);
      writeln(subor,t1+';'+t4+';'+t2+';'+t3);
      end;
  CloseFile(subor);
 end;
-
 
 // Začína Listbox sekcia, klikanie a úprava cien
 //Listbox 2
