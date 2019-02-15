@@ -135,9 +135,9 @@ begin
      then begin
       if MessageDlg('Zmena nakupnej ceny', 'Chcete nastavit nakupnu cenu vyssiy  ako predajnu cenu?', mtConfirmation,
    [mbYes, mbNo],0) = mrYes then
-      exit(false);
+      exit(true);
      end else begin
-     exit(true);
+     exit(false);
      end;
 
     end;
@@ -147,9 +147,9 @@ begin
       then begin
       if MessageDlg('Zmena predajnej ceny', 'Chcete nastavit predajnu cenu nizsiu ako nakupnu cenu?', mtConfirmation,
    [mbYes, mbNo],0) = mrYes then
-       exit(false);
+       exit(true);
       end else begin
-           exit(true);
+           exit(false);
       end;
 end;
 
@@ -180,7 +180,7 @@ var
   number,i:integer;
   jePrivelkaNC:boolean;
 begin
- jePrivelkaNC:=false;
+ jePrivelkaNC:=true;
 //////////////////////////////////////////////////// zistuje na ktorej pozicii sa nachadzame
    if ListBox2.ItemIndex > 0 then
     ListBox3.ItemIndex;
@@ -225,7 +225,7 @@ var
   number,i:integer;
   jeNizkaPC:boolean;
 begin
-     jeNizkaPC:=false;
+     jeNizkaPC:=true;
  ///////////////////////////////// zistuje miesto v poli
    if ListBox3.ItemIndex > 0 then    //Delete only when a string in the listbox is selected
     ListBox3.Items.Delete(ListBox1.ItemIndex);
