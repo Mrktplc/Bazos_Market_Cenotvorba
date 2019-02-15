@@ -124,8 +124,8 @@ begin
      c1:=(tovary[i].ncena) / 100;
      c2:=(tovary[i].pcena) / 100;
      ListBox1.Items.Add(inttostr(tovary[i].kod));
-     Listbox2.Items.Add(FormatFloat('0.## €',(c1)));
-     Listbox3.Items.Add(FormatFloat('0.## €',(c2)));
+     Listbox2.Items.Add(FormatFloat('0.##0 €',(c1)));
+     Listbox3.Items.Add(FormatFloat('0.##0 €',(c2)));
      Listbox4.Items.Add(tovary[i].nazov);
      end;
  end;
@@ -134,7 +134,8 @@ begin
  If novaNC > tovary[iTovaru].pcena
      then begin
       if MessageDlg('Zmena nakupnej ceny', 'Chcete nastavit nakupnu cenu vyssiy  ako predajnu cenu?', mtConfirmation,
-   [mbNo],0) = mrNo then
+   [mbYes, mbNo],0) = mrYes then
+    //tovary[i].ncena:=
       exit(true);
      end else begin
      exit(false);
@@ -146,7 +147,7 @@ begin
   IF novaPC < tovary[iTovaru].ncena
       then begin
       if MessageDlg('Zmena predajnej ceny', 'Chcete nastavit predajnu cenu nizsiu ako nakupnu cenu?', mtConfirmation,
-   [mbNo],0) = mrNo then
+   [mbYes,   mbNo],0) = mrYes then
        exit(true);
       end else begin
            exit(false);

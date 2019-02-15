@@ -135,6 +135,7 @@ begin
      then begin
       if MessageDlg('Zmena nakupnej ceny', 'Chcete nastavit nakupnu cenu vyssiy  ako predajnu cenu?', mtConfirmation,
    [mbYes, mbNo],0) = mrYes then
+    //tovary[i].ncena:=
       exit(true);
      end else begin
      exit(false);
@@ -146,7 +147,7 @@ begin
   IF novaPC < tovary[iTovaru].ncena
       then begin
       if MessageDlg('Zmena predajnej ceny', 'Chcete nastavit predajnu cenu nizsiu ako nakupnu cenu?', mtConfirmation,
-   [mbYes, mbNo],0) = mrYes then
+   [mbYes,   mbNo],0) = mrYes then
        exit(true);
       end else begin
            exit(false);
