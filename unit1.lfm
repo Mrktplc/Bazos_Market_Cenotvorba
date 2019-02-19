@@ -1,95 +1,43 @@
 object Form1: TForm1
-  Left = 1095
-  Height = 489
-  Top = 127
-  Width = 402
+  Left = 748
+  Height = 592
+  Top = 157
+  Width = 571
   Caption = 'Form1'
-  ClientHeight = 489
-  ClientWidth = 402
+  ClientHeight = 0
+  ClientWidth = 0
   OnCreate = FormCreate
   LCLVersion = '1.4.0.4'
-  object ListBox1: TListBox
-    Left = 16
-    Height = 312
-    Top = 40
-    Width = 80
-    ItemHeight = 0
+  object Ponuka: TStringGrid
+    Left = 8
+    Height = 232
+    Top = 120
+    Width = 464
+    Columns = <    
+      item
+        Title.Caption = 'kod'
+        Width = 90
+      end    
+      item
+        Title.Caption = 'nazov'
+        Width = 87
+      end    
+      item
+        Title.Caption = 'nakupna cena'
+        Width = 94
+      end    
+      item
+        Title.Caption = 'predajna cena'
+        Width = 93
+      end>
+    RowCount = 10
     TabOrder = 0
-  end
-  object Label1: TLabel
-    Left = 43
-    Height = 15
-    Top = 16
-    Width = 21
-    Caption = 'Kod'
-    ParentColor = False
-  end
-  object ListBox2: TListBox
-    Left = 208
-    Height = 312
-    Top = 40
-    Width = 72
-    ItemHeight = 0
-    MultiSelect = True
-    OnClick = ListBox2Click
-    TabOrder = 1
-  end
-  object ListBox3: TListBox
-    Left = 288
-    Height = 312
-    Top = 40
-    Width = 88
-    ItemHeight = 0
-    MultiSelect = True
-    OnClick = ListBox3Click
-    TabOrder = 2
-  end
-  object Label2: TLabel
-    Left = 208
-    Height = 15
-    Top = 16
-    Width = 76
-    Caption = 'Nakupna cena'
-    ParentColor = False
-  end
-  object Label3: TLabel
-    Left = 294
-    Height = 15
-    Top = 16
-    Width = 74
-    Caption = 'Predajna cena'
-    ParentColor = False
-  end
-  object Memo1: TMemo
-    Left = 280
-    Height = 82
-    Top = 376
-    Width = 120
-    Lines.Strings = (
-      'Memo1'
+    ColWidths = (
+      38
+      90
+      87
+      94
+      93
     )
-    TabOrder = 3
-  end
-  object ListBox4: TListBox
-    Left = 104
-    Height = 312
-    Top = 40
-    Width = 96
-    ItemHeight = 0
-    TabOrder = 4
-  end
-  object Label4: TLabel
-    Left = 136
-    Height = 15
-    Top = 16
-    Width = 33
-    Caption = 'Nazov'
-    ParentColor = False
-  end
-  object Image1: TImage
-    Left = 15
-    Height = 75
-    Top = 392
-    Width = 138
   end
 end
