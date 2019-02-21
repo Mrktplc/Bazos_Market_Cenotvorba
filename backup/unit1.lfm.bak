@@ -1,22 +1,28 @@
 object Form1: TForm1
-  Left = 748
-  Height = 592
-  Top = 157
-  Width = 571
+  Left = 789
+  Height = 364
+  Top = 143
+  Width = 601
   Caption = 'Form1'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 364
+  ClientWidth = 601
+  Color = 13420731
+  Font.CharSet = EASTEUROPE_CHARSET
+  Font.Height = -13
+  Font.Name = 'Times New Roman'
+  Font.Pitch = fpVariable
+  Font.Quality = fqDraft
   OnCreate = FormCreate
   LCLVersion = '1.4.0.4'
-  object Ponuka: TStringGrid
+  object Cena: TStringGrid
     Left = 8
     Height = 232
-    Top = 120
-    Width = 464
+    Top = 128
+    Width = 408
     Columns = <    
       item
         Title.Caption = 'kod'
-        Width = 90
+        Width = 81
       end    
       item
         Title.Caption = 'nazov'
@@ -28,16 +34,65 @@ object Form1: TForm1
       end    
       item
         Title.Caption = 'predajna cena'
-        Width = 93
+        Width = 88
       end>
-    RowCount = 10
+    RowCount = 25
     TabOrder = 0
+    TitleFont.CharSet = EASTEUROPE_CHARSET
+    TitleFont.Height = -13
+    TitleFont.Name = 'Times New Roman'
+    TitleFont.Pitch = fpVariable
+    TitleFont.Quality = fqDraft
+    OnClick = CenaClick
     ColWidths = (
-      38
-      90
+      33
+      81
       87
       94
-      93
+      88
     )
+  end
+  object Image1: TImage
+    Left = 8
+    Height = 75
+    Top = 8
+    Width = 138
+  end
+  object Memo1: TMemo
+    Left = 432
+    Height = 106
+    Top = 128
+    Width = 152
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 1
+  end
+  object Ulozit: TButton
+    Left = 432
+    Height = 25
+    Top = 335
+    Width = 104
+    Caption = 'Ulozit'
+    OnClick = UlozitClick
+    TabOrder = 2
+  end
+  object Edit1: TEdit
+    Left = 381
+    Height = 23
+    Top = 8
+    Width = 216
+    TabOrder = 3
+    Text = 'Edit1'
+  end
+  object Memo2: TMemo
+    Left = 432
+    Height = 90
+    Top = 240
+    Width = 150
+    Lines.Strings = (
+      'Memo2'
+    )
+    TabOrder = 4
   end
 end

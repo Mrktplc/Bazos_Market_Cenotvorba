@@ -1,0 +1,17 @@
+  Zapis, je trochu cudny, musim ho upravit, cena vyssia, LOCK a verzie, nulova hodnota
+21.2.2019 - nulova cena
+22.2.2019 - porovnanie a zapis
+23.2-3.3 - Locky a verzie
+vyhladavanie podla nazvu a kodu
+
+{For i:=1 to pocet_riad do   //Ulozit do riadkov
+     begin
+         //tahanie z pola podla postupu
+         c1:=(tovary[i].ncena) / 100;
+         c2:=(tovary[i].pcena) / 100;
+         //Cena.Cells[0,i]:= IntToStr(i);
+         Cena.Cells[1,i]:=IntToStr(tovary[i].kod);
+         Cena.Cells[2,i]:=tovary[i].nazov;
+         Cena.Cells[3,i]:=FormatFloat('0.## €',(c1));     //ncena
+         Cena.Cells[4,i]:=FormatFloat('0.## €',(c2));     //pcena
+     end; }                                                         

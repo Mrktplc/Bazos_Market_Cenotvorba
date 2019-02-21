@@ -1,0 +1,11 @@
+10
+100;mrkva;25;89
+101;petrzlen;26;90
+102;redkovka;27,91
+103;cibula;28;92
+104;kalerab;29;93
+105;zeler;30;94
+106;recept;31,95
+107;recio;32;96
+108;qwer;33;97
+109;huby;34;98
