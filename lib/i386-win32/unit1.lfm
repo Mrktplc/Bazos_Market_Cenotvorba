@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 789
+  Left = 602
   Height = 364
-  Top = 143
+  Top = 124
   Width = 601
   Caption = 'Form1'
   ClientHeight = 364
@@ -13,7 +13,7 @@ object Form1: TForm1
   Font.Pitch = fpVariable
   Font.Quality = fqDraft
   OnCreate = FormCreate
-  LCLVersion = '1.4.0.4'
+  LCLVersion = '1.6.4.0'
   object Cena: TStringGrid
     Left = 8
     Height = 232
@@ -78,10 +78,10 @@ object Form1: TForm1
     TabOrder = 2
   end
   object Edit1: TEdit
-    Left = 381
+    Left = 8
     Height = 23
-    Top = 8
-    Width = 216
+    Top = 96
+    Width = 138
     TabOrder = 3
     Text = 'Edit1'
   end
@@ -94,5 +94,10 @@ object Form1: TForm1
       'Memo2'
     )
     TabOrder = 4
+  end
+  object Verzia: TTimer
+    OnTimer = VerziaTimer
+    left = 560
+    top = 12
   end
 end
