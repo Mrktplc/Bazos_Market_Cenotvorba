@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 742
+  Left = 151
   Height = 361
-  Top = 181
+  Top = 184
   Width = 594
   Caption = 'Form1'
   ClientHeight = 361
@@ -76,9 +76,9 @@ object Form1: TForm1
     Text = 'Edit1'
   end
   object Memo2: TMemo
-    Left = 440
+    Left = 432
     Height = 90
-    Top = 240
+    Top = 144
     Width = 150
     Lines.Strings = (
       'Memo2'
@@ -90,6 +90,15 @@ object Form1: TForm1
     Height = 646
     Top = 48
     Width = 688
+  end
+  object Vymaz: TButton
+    Left = 432
+    Height = 25
+    Top = 304
+    Width = 104
+    Caption = 'Vymaz Cenu'
+    OnClick = VymazClick
+    TabOrder = 4
   end
   object Verzia: TTimer
     Interval = 100

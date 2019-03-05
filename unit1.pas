@@ -21,6 +21,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    Vymaz: TButton;
     Edit1: TEdit;
     Image2: TImage;
     Memo2: TMemo;
@@ -36,6 +37,7 @@ type
     //procedure Timer1Timer(Sender: TObject);
     procedure UlozitClick(Sender: TObject);
     procedure VerziaTimer(Sender: TObject);
+    procedure VymazClick(Sender: TObject);
     procedure Zapis;
     function privelkaNC(iTovaru, novaNC:integer):boolean;
     function nizkaPC(iTovaru, novaPC:integer):boolean;
@@ -52,7 +54,8 @@ type
     { public declarations }
   end;
 Const N=100;
-      Path='Z:\\INFProjekt2019\TimA\';
+      //Path='Z:\\INFProjekt2019\TimA\';
+      path='';
 var
   tovary:array[1..N]of tovar;
   subor:textfile;
@@ -107,14 +110,15 @@ var                                   //hodit currency,
   pom,i,r:integer;
 begin
    cenaStrList:=TStringList.Create;
-            cenaStrList.LoadFromFile(path + 'CENNIK.txt');
+            cenaStrList.LoadFromFile(path +'CENNIK.txt');
             r:=strtoint(cenaStrList[0]);          //pocet riadkov
             For i:=1 to r do
                 begin
                   pom_r:=cenaStrList[i];
                   if (length(pom_r)=3) then begin
                                             tovary[i].jeaktivna:=false;
-
+                                            Cena.Cells[3,i]:=Cena.Cells[3,i]+'*';
+                                            Cena.Cells[4,i]:=Cena.Cells[4,i]+'*';
                                             end else begin
                   tovary[i].jeaktivna:=true;
                   pom:=Pos(';',pom_r);
@@ -197,7 +201,7 @@ begin
       FileCreate(path + 'TOVAR_LOCK.txt');
      end;
      //DeleteFile(path + 'TOVAR_LOCK.txt');
-     AssignFile(subor,path + 'TOVAR_LOCK.txt');
+     AssignFile(subor,path +  'TOVAR_LOCK.txt');
      Reset(subor);
      CloseFile(subor);
      LT:=true;
@@ -214,7 +218,9 @@ begin
 
      end;
      //DeleteFile(path + 'CENNIK_LOCK.txt');
-
+     //AssignFile(subor,path +  'CENNIK_LOCK.txt');
+     //Reset(subor);
+     //CloseFile(subor);
      LC:=true;
 end;
 end;
@@ -236,6 +242,12 @@ begin
 
                   NacitanieCennika;
                   end;
+end;
+
+procedure TForm1.VymazClick(Sender: TObject);
+var i:integer;
+begin
+//vece vyrobit vymazanie suboru
 end;
 
 procedure TForm1.Zapis;
@@ -377,7 +389,7 @@ if jePrivelkaNC then begin
  exit;
  end;
 //////////////////////////////////
-if number > 0
+if number >=0
     then
      tovary[i].ncena:=number
      else
@@ -417,7 +429,7 @@ if jeNizkaPC then begin
  exit;
  end;
 //////////////////////////////////
-if number > 0
+if number >= 0
     then
      tovary[i].pcena:=number
      else
@@ -428,9 +440,9 @@ if number > 0
 end;
 procedure TForm1.UlozitClick(Sender: TObject);
 begin
-//image2.picture.LoadFromFile('204.jpg');
-DeleteFile(path + 'TOVAR_LOCK.txt');
-DeleteFile(path + 'CENNIK_LOCK.txt');
+image2.picture.LoadFromFile('204.jpg');
+DeleteFile({path + }'TOVAR_LOCK.txt');
+DeleteFile({path +} 'CENNIK_LOCK.txt');
   //Zapis;
 end;
 end.

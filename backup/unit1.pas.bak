@@ -21,6 +21,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    Vymaz: TButton;
     Edit1: TEdit;
     Image2: TImage;
     Memo2: TMemo;
@@ -36,6 +37,7 @@ type
     //procedure Timer1Timer(Sender: TObject);
     procedure UlozitClick(Sender: TObject);
     procedure VerziaTimer(Sender: TObject);
+    procedure VymazClick(Sender: TObject);
     procedure Zapis;
     function privelkaNC(iTovaru, novaNC:integer):boolean;
     function nizkaPC(iTovaru, novaPC:integer):boolean;
@@ -53,6 +55,7 @@ type
   end;
 Const N=100;
       //Path='Z:\\INFProjekt2019\TimA\';
+      path='';
 var
   tovary:array[1..N]of tovar;
   subor:textfile;
@@ -68,7 +71,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-AssignFile(subor,'CENNIK_VERZIA.txt');
+AssignFile(subor,path + 'CENNIK_VERZIA.txt');
 Reset(subor);
 Readln(subor,p1);
 CloseFile(subor);
@@ -87,7 +90,7 @@ var tovarStrList: TStringList;
   pom_r,pom_s:string;
 begin
   tovarStrList:= TStringList.Create;
- tovarStrList.LOadFromFile('TOVAR.txt');
+ tovarStrList.LOadFromFile(path + 'TOVAR.txt');
  //Nacitanie riadkov
  pocet_riad:=strtoint(tovarStrList[0]);
    For i:=1 to pocet_riad do
@@ -107,14 +110,15 @@ var                                   //hodit currency,
   pom,i,r:integer;
 begin
    cenaStrList:=TStringList.Create;
-            cenaStrList.LoadFromFile('CENNIK.txt');
+            cenaStrList.LoadFromFile(path +'CENNIK.txt');
             r:=strtoint(cenaStrList[0]);          //pocet riadkov
             For i:=1 to r do
                 begin
                   pom_r:=cenaStrList[i];
                   if (length(pom_r)=3) then begin
                                             tovary[i].jeaktivna:=false;
-
+                                            Cena.Cells[3,i]:=Cena.Cells[3,i]+'*';
+                                            Cena.Cells[4,i]:=Cena.Cells[4,i]+'*';
                                             end else begin
                   tovary[i].jeaktivna:=true;
                   pom:=Pos(';',pom_r);
@@ -193,11 +197,11 @@ begin
  LT:=false;
  While Not LT do
      begin
-     if not fileexists('TOVAR_LOCK.txt') then begin
-      FileCreate('TOVAR_LOCK.txt');
+     if not fileexists(path + 'TOVAR_LOCK.txt') then begin
+      FileCreate(path + 'TOVAR_LOCK.txt');
      end;
      //DeleteFile(path + 'TOVAR_LOCK.txt');
-     AssignFile(subor,'TOVAR_LOCK.txt');
+     AssignFile(subor,path +  'TOVAR_LOCK.txt');
      Reset(subor);
      CloseFile(subor);
      LT:=true;
@@ -209,12 +213,14 @@ begin
   LC:=false;
  While Not LC do
      begin
-     if not fileexists('CENNIK_LOCK.txt') then begin
-      FileCreate('CENNIK_LOCK.txt');
+     if not fileexists(path + 'CENNIK_LOCK.txt') then begin
+      FileCreate(path + 'CENNIK_LOCK.txt');
 
      end;
      //DeleteFile(path + 'CENNIK_LOCK.txt');
-
+     //AssignFile(subor,path +  'CENNIK_LOCK.txt');
+     //Reset(subor);
+     //CloseFile(subor);
      LC:=true;
 end;
 end;
@@ -227,7 +233,7 @@ end;
 procedure TForm1.VerziaTimer(Sender: TObject);      //Nacitat verzie, kontrolovat ci sa nieco nezmenilo ci mam rovnaku verziu
 var i:integer;
 begin
- AssignFile(subor,'CENNIK_VERZIA.txt');
+ AssignFile(subor,path + 'CENNIK_VERZIA.txt');
  Reset(Subor);
  ReadLn(subor,p2);
  CloseFile(subor);
@@ -236,6 +242,16 @@ begin
 
                   NacitanieCennika;
                   end;
+end;
+
+procedure TForm1.VymazClick(Sender: TObject);
+var i:integer;
+begin
+
+  i:=Cena.Row;
+  Memo2.Append(inttostr(i));
+  tovary[i].ncena:=0;
+  tovary[i].pcena:=0;
 end;
 
 procedure TForm1.Zapis;
@@ -289,7 +305,7 @@ begin
          writeln(subor, t1+';'+t3+';'+t4);
      end; }
 
- AssignFile(subor,'CENNIK.txt');
+ AssignFile(subor,path + 'CENNIK.txt');
  Rewrite(subor);
  Writeln(subor,pocet_riad);
  For i:=1 to pocet_riad do
@@ -302,7 +318,7 @@ begin
      end;
    CloseFile(subor);
  ////////////////////////////////////////
-   AssignFile(subor,'CENNIK_VERZIA.txt');
+   AssignFile(subor,path + 'CENNIK_VERZIA.txt');
   Reset(subor);
   Readln(subor,v);
 
@@ -377,7 +393,7 @@ if jePrivelkaNC then begin
  exit;
  end;
 //////////////////////////////////
-if number > 0
+if number >=0
     then
      tovary[i].ncena:=number
      else
@@ -417,7 +433,7 @@ if jeNizkaPC then begin
  exit;
  end;
 //////////////////////////////////
-if number > 0
+if number >= 0
     then
      tovary[i].pcena:=number
      else
@@ -428,9 +444,9 @@ if number > 0
 end;
 procedure TForm1.UlozitClick(Sender: TObject);
 begin
-//image2.picture.LoadFromFile('204.jpg');
-DeleteFile('TOVAR_LOCK.txt');
-DeleteFile('CENNIK_LOCK.txt');
+image2.picture.LoadFromFile('204.jpg');
+DeleteFile({path + }'TOVAR_LOCK.txt');
+DeleteFile({path +} 'CENNIK_LOCK.txt');
   //Zapis;
 end;
 end.
