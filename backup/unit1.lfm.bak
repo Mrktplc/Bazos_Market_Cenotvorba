@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 602
-  Height = 364
-  Top = 124
-  Width = 601
+  Left = 742
+  Height = 361
+  Top = 181
+  Width = 594
   Caption = 'Form1'
-  ClientHeight = 364
-  ClientWidth = 601
+  ClientHeight = 361
+  ClientWidth = 594
   Color = 13420731
   Font.CharSet = EASTEUROPE_CHARSET
   Font.Height = -13
@@ -13,7 +13,7 @@ object Form1: TForm1
   Font.Pitch = fpVariable
   Font.Quality = fqDraft
   OnCreate = FormCreate
-  LCLVersion = '1.6.4.0'
+  LCLVersion = '1.4.0.4'
   object Cena: TStringGrid
     Left = 8
     Height = 232
@@ -58,44 +58,41 @@ object Form1: TForm1
     Top = 8
     Width = 138
   end
-  object Memo1: TMemo
-    Left = 432
-    Height = 106
-    Top = 128
-    Width = 152
-    Lines.Strings = (
-      'Memo1'
-    )
-    TabOrder = 1
-  end
   object Ulozit: TButton
     Left = 432
     Height = 25
     Top = 335
     Width = 104
-    Caption = 'Ulozit'
+    Caption = 'Okrasna funkcia'
     OnClick = UlozitClick
-    TabOrder = 2
+    TabOrder = 1
   end
   object Edit1: TEdit
     Left = 8
     Height = 23
     Top = 96
     Width = 138
-    TabOrder = 3
+    TabOrder = 2
     Text = 'Edit1'
   end
   object Memo2: TMemo
-    Left = 432
+    Left = 440
     Height = 90
     Top = 240
     Width = 150
     Lines.Strings = (
       'Memo2'
     )
-    TabOrder = 4
+    TabOrder = 3
+  end
+  object Image2: TImage
+    Left = 632
+    Height = 646
+    Top = 48
+    Width = 688
   end
   object Verzia: TTimer
+    Interval = 100
     OnTimer = VerziaTimer
     left = 560
     top = 12
