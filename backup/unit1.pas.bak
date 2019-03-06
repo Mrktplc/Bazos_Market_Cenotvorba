@@ -79,7 +79,7 @@ Readln(subor,p1);
 CloseFile(subor);
                  AssignFile(subor,path + 'TOVAR_VERZIA.txt');
                  Reset(subor);
-                 Readln(subor,p4); //dostanem tam cislo ktore pak porovnavam s aktualnou verziou
+                 Readln(subor,p3); //dostanem tam cislo ktore pak porovnavam s aktualnou verziou
                  CloseFile(subor);
 image1.picture.LoadFromFile('logo.png');
 LockT;
@@ -208,13 +208,12 @@ end;
 procedure TForm1.Timer1Timer(Sender: TObject);
 
 begin
-  VerziaC;
-  AssignFile(subor,path + 'TOVAR_VERZIA.txt');
-  Reset(subor);
-  Readln(subor,p3);
- If p1 <= p2 then begin
-                  NacitanieCennika;
-                  end;
+  //VerziaC;
+  //AssignFile(subor,path + 'TOVAR_VERZIA.txt');
+  //Reset(subor);
+  //Readln(subor,p4);
+ NacitanieCennika;
+ NacitanieTovaru
 end;
 
 
@@ -314,6 +313,10 @@ begin
          t4:=FloatToStr(tovary[iHlRiadku].oldPCena);
          writeln(subor, t1+';'+t3+';'+t4);
      end; }
+
+ LockC;
+ DeleteLock;
+
 
  AssignFile(subor,path + 'CENNIK.txt');
  Rewrite(subor);

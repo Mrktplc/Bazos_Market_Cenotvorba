@@ -208,17 +208,12 @@ end;
 procedure TForm1.Timer1Timer(Sender: TObject);
 
 begin
-  VerziaC;
-  AssignFile(subor,path + 'TOVAR_VERZIA.txt');
-  Reset(subor);
-  Readln(subor,p4);
- If p1 <= p2 then begin
-                  NacitanieCennika;
-                  end;
- IF p3 <= p4 then
-             begin
-             NacitanieTovaru;
-             end;
+  //VerziaC;
+  //AssignFile(subor,path + 'TOVAR_VERZIA.txt');
+  //Reset(subor);
+  //Readln(subor,p4);
+ NacitanieCennika;
+ NacitanieTovaru
 end;
 
 
@@ -319,6 +314,10 @@ begin
          writeln(subor, t1+';'+t3+';'+t4);
      end; }
 
+ LockC;
+ DeleteLock;
+
+
  AssignFile(subor,path + 'CENNIK.txt');
  Rewrite(subor);
  Writeln(subor,pocet_riad);
@@ -389,7 +388,7 @@ P2:=inttostr(Cena.Row);   //do pozicie P1 som si nahral hor cisla,
  i:=Cena.Row;            //do i vkladam udaje z pozicky 1, neskor i pouzivam pri tovare aby som vedel kde som to zmenil
 //Memo1.Append(inttostr(i));
 ///////////////////////////////
-  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+  if InputQuery('Nova cena', 'Zadaj novu cenu v centoch', UserString) = True
       then
        begin
          success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena
@@ -429,7 +428,7 @@ begin
  i:=Cena.Row;            //do i vkladam udaje z pozicky 1, neskor i pouzivam pri tovare aby som vedel kde som to zmenil
 //Memo1.Append(inttostr(i));
 ///////////////////////////////
-  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+  if InputQuery('Nova cena', 'Zadaj novu cenu v centoch', UserString) = True
       then
        begin
          success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena
