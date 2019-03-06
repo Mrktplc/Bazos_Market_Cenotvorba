@@ -388,7 +388,7 @@ P2:=inttostr(Cena.Row);   //do pozicie P1 som si nahral hor cisla,
  i:=Cena.Row;            //do i vkladam udaje z pozicky 1, neskor i pouzivam pri tovare aby som vedel kde som to zmenil
 //Memo1.Append(inttostr(i));
 ///////////////////////////////
-  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+  if InputQuery('Nova cena', 'Zadaj novu cenu v centoch', UserString) = True
       then
        begin
          success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena
@@ -428,7 +428,7 @@ begin
  i:=Cena.Row;            //do i vkladam udaje z pozicky 1, neskor i pouzivam pri tovare aby som vedel kde som to zmenil
 //Memo1.Append(inttostr(i));
 ///////////////////////////////
-  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+  if InputQuery('Nova cena', 'Zadaj novu cenu v centoch', UserString) = True
       then
        begin
          success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena
