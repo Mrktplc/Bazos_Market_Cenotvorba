@@ -21,6 +21,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    Timer1: TTimer;
     Vymaz: TButton;
     Edit1: TEdit;
     Image2: TImage;
@@ -28,15 +29,15 @@ type
     Ulozit: TButton;
     Image1: TImage;
     Cena: TStringGrid;
-    Verzia: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure CenaClick(Sender: TObject);
     procedure Reload;
     procedure Reload2;
+    procedure Timer1Timer(Sender: TObject);
+    //procedure VerziaTimer(Sender: TObject);
     //procedure Timer1Timer(Sender: TObject);
     //procedure Timer1Timer(Sender: TObject);
     procedure UlozitClick(Sender: TObject);
-    procedure VerziaTimer(Sender: TObject);
     procedure VymazClick(Sender: TObject);
     procedure Zapis;
     function privelkaNC(iTovaru, novaNC:integer):boolean;
@@ -45,21 +46,22 @@ type
     procedure zmenaPC;
     procedure NacitanieTovaru;
     procedure Nacitaniecennika;
-    procedure Verzie;
+    procedure VerziaC;
     procedure LockT;
     procedure LockC;
+    procedure DeleteLock;
   private
     { private declarations }
   public
     { public declarations }
   end;
 Const N=100;
-      //Path='Z:\\INFProjekt2019\TimA\';
-      path='';
+      Path='Z:\\INFProjekt2019\TimA\';
+      //path='';
 var
   tovary:array[1..N]of tovar;
   subor:textfile;
-  pocet_riad,p1,p2:integer;
+  pocet_riad,p1,p2,p3,p4:integer;
   AktualC,AktualT:integer;  //aktualne subory
   Form1: TForm1;
 
@@ -75,6 +77,10 @@ AssignFile(subor,path + 'CENNIK_VERZIA.txt');
 Reset(subor);
 Readln(subor,p1);
 CloseFile(subor);
+                 AssignFile(subor,path + 'TOVAR_VERZIA.txt');
+                 Reset(subor);
+                 Readln(subor,p3); //dostanem tam cislo ktore pak porovnavam s aktualnou verziou
+                 CloseFile(subor);
 image1.picture.LoadFromFile('logo.png');
 LockT;
 LockC;
@@ -83,7 +89,14 @@ NacitanieTovaru;
 Nacitaniecennika;
  //Vsuva do tabulky
  Reload;
+ DeleteLock;
 end;
+procedure TForm1.DeleteLock;
+begin
+     DeleteFile(path + 'TOVAR_LOCK.txt');
+     DeleteFile(path + 'CENNIK_LOCK.txt');
+end;
+
 procedure TForm1.NacitanieTovaru;
 var tovarStrList: TStringList;
   P1,pozB,i,pom,j,h:integer;
@@ -191,6 +204,25 @@ begin
       end;
 
 end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+
+begin
+  VerziaC;
+  AssignFile(subor,path + 'TOVAR_VERZIA.txt');
+  Reset(subor);
+  Readln(subor,p4);
+ If p1 <= p2 then begin
+                  NacitanieCennika;
+                  end;
+ IF p3 <= p4 then
+             begin
+             NacitanieTovaru;
+             end;
+end;
+
+
+
 procedure TForm1.LockT;  //lock Tovaru
 var LT:boolean;    //lock tovaru
 begin
@@ -198,13 +230,11 @@ begin
  While Not LT do
      begin
      if not fileexists(path + 'TOVAR_LOCK.txt') then begin
-      FileCreate(path + 'TOVAR_LOCK.txt');
+      AssignFile(subor, path + 'TOVAR_LOCK.txt');
+      rewrite(subor);
+      CloseFile(subor);
+      LT:=true;
      end;
-     //DeleteFile(path + 'TOVAR_LOCK.txt');
-     AssignFile(subor,path +  'TOVAR_LOCK.txt');
-     Reset(subor);
-     CloseFile(subor);
-     LT:=true;
 end;
 end;
 procedure TForm1.LockC; //lock Cennika
@@ -214,35 +244,23 @@ begin
  While Not LC do
      begin
      if not fileexists(path + 'CENNIK_LOCK.txt') then begin
-      FileCreate(path + 'CENNIK_LOCK.txt');
-
+      AssignFile(subor,path + 'CENNIK_LOCK.txt');
+      rewrite(subor);
+      CloseFile(subor);
+       LC:=true;
      end;
-     //DeleteFile(path + 'CENNIK_LOCK.txt');
-     //AssignFile(subor,path +  'CENNIK_LOCK.txt');
-     //Reset(subor);
-     //CloseFile(subor);
-     LC:=true;
 end;
 end;
 
-procedure TForm1.Verzie;
-begin
-
-end;
-
-procedure TForm1.VerziaTimer(Sender: TObject);      //Nacitat verzie, kontrolovat ci sa nieco nezmenilo ci mam rovnaku verziu
-var i:integer;
+procedure TForm1.VerziaC;
 begin
  AssignFile(subor,path + 'CENNIK_VERZIA.txt');
  Reset(Subor);
  ReadLn(subor,p2);
  CloseFile(subor);
-
- If p1 <= p2 then begin
-
-                  NacitanieCennika;
-                  end;
 end;
+
+
 
 procedure TForm1.VymazClick(Sender: TObject);
 var i:integer;
@@ -441,8 +459,8 @@ end;
 procedure TForm1.UlozitClick(Sender: TObject);
 begin
 image2.picture.LoadFromFile('204.jpg');
-DeleteFile({path + }'TOVAR_LOCK.txt');
-DeleteFile({path +} 'CENNIK_LOCK.txt');
+DeleteFile(path + 'TOVAR_LOCK.txt');
+DeleteFile(path + 'CENNIK_LOCK.txt');
   //Zapis;
 end;
 end.
