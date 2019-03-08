@@ -11,11 +11,13 @@ uses
 type
   tovar=record
     nazov:string;
-    ncena,pcena,oldNCena,oldPCena:real;
+    ncena,pcena:real;
     kod:integer;
     kodis:integer;
     jeaktivna:boolean;
+    aktivna:integer;
     verzia:integer;
+
   end;
 
   { TForm1 }
@@ -23,9 +25,7 @@ type
   TForm1 = class(TForm)
     Timer1: TTimer;
     Vymaz: TButton;
-    Edit1: TEdit;
     Image2: TImage;
-    Memo2: TMemo;
     Ulozit: TButton;
     Image1: TImage;
     Cena: TStringGrid;
@@ -50,14 +50,15 @@ type
     procedure LockT;
     procedure LockC;
     procedure DeleteLock;
+    procedure Vymaze;
   private
     { private declarations }
   public
     { public declarations }
   end;
 Const N=100;
-      Path='Z:\\INFProjekt2019\TimA\';
-      //path='';
+      //Path='Z:\\INFProjekt2019\TimA\';
+      path='';
 var
   tovary:array[1..N]of tovar;
   subor:textfile;
@@ -75,21 +76,20 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
 AssignFile(subor,path + 'CENNIK_VERZIA.txt');
 Reset(subor);
-Readln(subor,p1);
+Readln(subor,p1);   //cennik verzia porovnavam
 CloseFile(subor);
                  AssignFile(subor,path + 'TOVAR_VERZIA.txt');
                  Reset(subor);
                  Readln(subor,p3); //dostanem tam cislo ktore pak porovnavam s aktualnou verziou
                  CloseFile(subor);
 image1.picture.LoadFromFile('logo.png');
-LockT;
-LockC;
+//LockT;
+//LockC;
 NacitanieTovaru;
  //////////////////////////////////////////////////
 Nacitaniecennika;
  //Vsuva do tabulky
  Reload;
- DeleteLock;
 end;
 procedure TForm1.DeleteLock;
 begin
@@ -102,6 +102,7 @@ var tovarStrList: TStringList;
   P1,pozB,i,pom,j,h:integer;
   pom_r,pom_s:string;
 begin
+     LockT;
   tovarStrList:= TStringList.Create;
  tovarStrList.LOadFromFile(path + 'TOVAR.txt');
  //Nacitanie riadkov
@@ -115,6 +116,7 @@ begin
 
          tovary[i].nazov:=pom_r;
          end;
+   DeleteLock;
 end;
 procedure TForm1.Nacitaniecennika;    //ak kod nema cenu: In Construction!!!
 var                                   //hodit currency,
@@ -122,6 +124,7 @@ var                                   //hodit currency,
   cenaStrList: TStringList;
   pom,i,r:integer;
 begin
+   LockC;
    cenaStrList:=TStringList.Create;
             cenaStrList.LoadFromFile(path +'CENNIK.txt');
             r:=strtoint(cenaStrList[0]);          //pocet riadkov
@@ -147,9 +150,8 @@ begin
                   tovary[i].pcena:=strtofloat(pom_r);
                 end;
                 end;
-
-end;
-
+            DeleteLock;
+ end;
 procedure TForm1.CenaClick(Sender: TObject);
 var  S1,S2:integer;
   P1,P2:integer;
@@ -174,6 +176,15 @@ procedure TForm1.Reload;
 var i,j:integer;
   c1,c2:real;
 begin
+  for i:=1 to pocet_riad do
+      begin
+        cena.cells[1,i]:='';
+        cena.cells[2,i]:='';
+        cena.cells[3,i]:='';
+        cena.cells[4,i]:='';
+      end;
+
+
   For i:=1 to pocet_riad do
       begin
         c1:=(tovary[i].ncena) /100;
@@ -181,12 +192,21 @@ begin
         Cena.Cells[0,i]:=Inttostr(i);
         Cena.Cells[1,i]:=inttostr(tovary[i].kod);
         Cena.Cells[2,i]:=tovary[i].nazov;
+        if tovary[i].jeaktivna=false then begin
+                                         Cena.Cells[3,i]:=Cena.Cells[3,i]+'*';
+                                         Cena.Cells[4,i]:=Cena.Cells[4,i]+'*';
+                                        end else begin
+
+        tovary[i].jeaktivna:=true;
         Cena.Cells[3,i]:=FormatFloat('0.## €',(c1));
         Cena.Cells[4,i]:=FormatFloat('0.## €',(c2));
         //Memo2.Append(floattostr((c1)));
       end;
 
 end;
+
+end;
+
 procedure TForm1.Reload2;
 var i,j:integer;
   c1,c2:real;
@@ -204,16 +224,28 @@ begin
       end;
 
 end;
-
 procedure TForm1.Timer1Timer(Sender: TObject);
 
 begin
-  //VerziaC;
-  //AssignFile(subor,path + 'TOVAR_VERZIA.txt');
-  //Reset(subor);
-  //Readln(subor,p4);
- NacitanieCennika;
- NacitanieTovaru
+  VerziaC;
+  AssignFile(subor,path + 'TOVAR_VERZIA.txt');
+  Reset(subor);
+  Readln(subor,p4);
+  CloseFile(subor);
+
+  IF p1 < p2 then             //Cennik verzia
+     begin
+     LockC;
+     NacitanieCennika;
+     DeleteLock;
+     end;
+ IF p3 < p4 then
+    begin
+    LockT;
+ NacitanieTovaru;
+   DeleteLock;
+    end;
+ Reload;
 end;
 
 
@@ -254,22 +286,75 @@ begin
  ReadLn(subor,p2);
  CloseFile(subor);
 end;
+procedure TForm1.Vymaze;
+var v, j,i:integer;
+  t1,t2,t3,pom_r:string;
+begin
+ j:=Cena.Row;
+ tovary[j].jeaktivna:=false;
+ Zapis;
+ Reload;
+  {
+   pom_r:=inttostr(tovary[j].kod);
+  //Memo1.Append(floattostr(tovary[j].ncena) +';'+floattostr (tovary[i].pcena));
+  i:=j;
+  tovary[i].kod:=StrToInt(pom_r);
+  Memo1.Append(inttostr(tovary[i].kod));
+  AssignFile(subor, path + 'CENNIK.txt');
+  Rewrite(subor);
+  writeln(subor, pocet_riad);
+  For i:=1 to pocet_riad do
+      begin
+      t1:=inttostr(tovary[i].kod);
+      t2:=floattostr(tovary[i].ncena);
+      t3:=floattostr(tovary[i].pcena);
+      //Memo1.Append(t1+';'+t2+';'+t3);
+      pom_r:=t2+';'+t3;
+      writeln(subor, pom_r);
+      end;
+  CloseFile(subor);
+  }
+ {tovary[j].ncena:=0;                             //stare mazanie, nahradzuje iba nulou
+ tovary[j].pcena:=0;
+ Memo2.Append(inttostr(j));}
+ {AssignFile(subor,path + 'CENNIK.txt');
+ Rewrite(subor);
+ writeln(subor,pocet_riad);
+ For i:=1 to pocet_riad do
+     begin
+     t1:=inttostr(tovary[i].kod);
+     t2:=floattostr(tovary[i].ncena);
+     t3:=floattostr(tovary[i].pcena);
+     writeln(subor, t1+';'+t2+';'+t3);
+     //Memo2.Append(t1+';'+t3+';'+t4);
+     end;
+   CloseFile(subor);}
+   {
+    AssignFile(subor,path + 'CENNIK_VERZIA.txt');
+   Reset(subor);                                             //zvysenie Verzie
+   Readln(subor,v);
 
-
-
+     Rewrite(subor);
+     Writeln(subor,v+1);
+     CloseFile(subor);
+    DeleteLock;
+      end;
+   }
+ end;
 procedure TForm1.VymazClick(Sender: TObject);
 var i:integer;
 begin
-//vece vyrobit vymazanie suboru
-end;
+ Vymaze;
+//vecer vyrobit vymazanie suboru
+ end;
 
 procedure TForm1.Zapis;
 var v,i,iHlRiadku, iTovaru:integer;
-    nazov,P2,t1,t2,t3,t4,oldRiadok,newRiadok,COldRiadok,CNewRiadok:string;
+    nazov,P2,t1,t2,t3,t4,oldRiadok,newRiadok,COldRiadok,CNewRiadok,pom_s:string;
     tovarStrlist,cenaStrList: TStringList;
      jeaktivna:boolean;
 begin
-  {tovarStrList:= TStringList.Create;
+  {tovarStrList:= TStringList.Create;        //stary zapis
       tovarStrList.LoadFromFile('TOVAR.txt');
  oldRiadok:= intToStr(tovary[iHlRiadku].kod) +';' +(tovary[iHlRiadku].nazov);
  newRiadok:= inttostr(tovary[iHlRiadku].kod)+';'+ (tovary[iHlRiadku].nazov);
@@ -315,7 +400,7 @@ begin
      end; }
 
  LockC;
- DeleteLock;
+
 
 
  AssignFile(subor,path + 'CENNIK.txt');
@@ -326,13 +411,15 @@ begin
      t1:=inttostr(tovary[i].kod);
      t3:=floattostr(tovary[i].ncena);
      t4:=floattostr(tovary[i].pcena);
-     writeln(subor, t1+';'+t3+';'+t4);
+     if tovary[i].jeaktivna then pom_s:=t1+';'+t3+';'+t4 else pom_s:=t1;
+     writeln(subor,pom_s);
      Memo2.Append(t1+';'+t3+';'+t4);
      end;
    CloseFile(subor);
+    DeleteLock;
  ////////////////////////////////////////
    AssignFile(subor,path + 'CENNIK_VERZIA.txt');
-  Reset(subor);
+  Reset(subor);                                             //zvysenie Verzie
   Readln(subor,v);
 
     Rewrite(subor);
@@ -388,7 +475,7 @@ P2:=inttostr(Cena.Row);   //do pozicie P1 som si nahral hor cisla,
  i:=Cena.Row;            //do i vkladam udaje z pozicky 1, neskor i pouzivam pri tovare aby som vedel kde som to zmenil
 //Memo1.Append(inttostr(i));
 ///////////////////////////////
-  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+  if InputQuery('Nova cena', 'Zadaj novu cenu v centoch', UserString) = True
       then
        begin
          success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena
@@ -428,7 +515,7 @@ begin
  i:=Cena.Row;            //do i vkladam udaje z pozicky 1, neskor i pouzivam pri tovare aby som vedel kde som to zmenil
 //Memo1.Append(inttostr(i));
 ///////////////////////////////
-  if InputQuery('Nova cena', 'Zadaj novu cenu', UserString) = True
+  if InputQuery('Nova cena', 'Zadaj novu cenu v centoch', UserString) = True
       then
        begin
          success:=TryStrtoInt(UserString, number);                                     //odobrit nech zostane predtym zadana cena

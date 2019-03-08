@@ -1,4 +1,4 @@
-10
+12
 100;jablko
 101;maly problem
 200;paprika
@@ -9,3 +9,5 @@
 403;hovadina
 404;auto
 410;mor ho
+425;mardaj
+389;jahody

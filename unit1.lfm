@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 718
-  Height = 361
-  Top = 168
+  Left = 430
+  Height = 364
+  Top = 229
   Width = 594
   Caption = 'Form1'
-  ClientHeight = 361
-  ClientWidth = 594
+  ClientHeight = 0
+  ClientWidth = 0
   Color = 13420731
   Font.CharSet = EASTEUROPE_CHARSET
   Font.Height = -13
@@ -59,31 +59,13 @@ object Form1: TForm1
     Width = 138
   end
   object Ulozit: TButton
-    Left = 432
+    Left = 440
     Height = 25
-    Top = 335
+    Top = 464
     Width = 104
     Caption = 'Okrasna funkcia'
     OnClick = UlozitClick
     TabOrder = 1
-  end
-  object Edit1: TEdit
-    Left = 8
-    Height = 23
-    Top = 96
-    Width = 138
-    TabOrder = 2
-    Text = 'Edit1'
-  end
-  object Memo2: TMemo
-    Left = 432
-    Height = 90
-    Top = 144
-    Width = 150
-    Lines.Strings = (
-      'Memo2'
-    )
-    TabOrder = 3
   end
   object Image2: TImage
     Left = 632
@@ -92,13 +74,13 @@ object Form1: TForm1
     Width = 688
   end
   object Vymaz: TButton
-    Left = 432
+    Left = 456
     Height = 25
-    Top = 304
+    Top = 328
     Width = 104
     Caption = 'Vymaz Cenu'
     OnClick = VymazClick
-    TabOrder = 4
+    TabOrder = 2
   end
   object Timer1: TTimer
     Interval = 100
