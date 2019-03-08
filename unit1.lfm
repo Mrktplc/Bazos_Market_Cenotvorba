@@ -4,8 +4,8 @@ object Form1: TForm1
   Top = 229
   Width = 594
   Caption = 'Form1'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 364
+  ClientWidth = 594
   Color = 13420731
   Font.CharSet = EASTEUROPE_CHARSET
   Font.Height = -13

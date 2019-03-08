@@ -83,13 +83,14 @@ CloseFile(subor);
                  Readln(subor,p3); //dostanem tam cislo ktore pak porovnavam s aktualnou verziou
                  CloseFile(subor);
 image1.picture.LoadFromFile('logo.png');
-//LockT;
+LockT;
 //LockC;
 NacitanieTovaru;
  //////////////////////////////////////////////////
 Nacitaniecennika;
  //Vsuva do tabulky
  Reload;
+ DeleteLock;
 end;
 procedure TForm1.DeleteLock;
 begin
@@ -102,7 +103,6 @@ var tovarStrList: TStringList;
   P1,pozB,i,pom,j,h:integer;
   pom_r,pom_s:string;
 begin
-     LockT;
   tovarStrList:= TStringList.Create;
  tovarStrList.LOadFromFile(path + 'TOVAR.txt');
  //Nacitanie riadkov
@@ -116,7 +116,6 @@ begin
 
          tovary[i].nazov:=pom_r;
          end;
-   DeleteLock;
 end;
 procedure TForm1.Nacitaniecennika;    //ak kod nema cenu: In Construction!!!
 var                                   //hodit currency,
@@ -124,7 +123,6 @@ var                                   //hodit currency,
   cenaStrList: TStringList;
   pom,i,r:integer;
 begin
-   LockC;
    cenaStrList:=TStringList.Create;
             cenaStrList.LoadFromFile(path +'CENNIK.txt');
             r:=strtoint(cenaStrList[0]);          //pocet riadkov
@@ -150,7 +148,6 @@ begin
                   tovary[i].pcena:=strtofloat(pom_r);
                 end;
                 end;
-            DeleteLock;
  end;
 procedure TForm1.CenaClick(Sender: TObject);
 var  S1,S2:integer;
@@ -413,7 +410,7 @@ begin
      t4:=floattostr(tovary[i].pcena);
      if tovary[i].jeaktivna then pom_s:=t1+';'+t3+';'+t4 else pom_s:=t1;
      writeln(subor,pom_s);
-     Memo2.Append(t1+';'+t3+';'+t4);
+     //Memo2.Append(t1+';'+t3+';'+t4);
      end;
    CloseFile(subor);
     DeleteLock;
@@ -499,8 +496,10 @@ if number >=0
      else
        ShowMessage('Zadaj vyssiu cenu');
 /////////////////////////////////
+tovary[i].jeaktivna:=true;
+Zapis;
  Reload;
- Zapis;
+
 end;
 procedure TForm1.ZmenaPC;
 var
